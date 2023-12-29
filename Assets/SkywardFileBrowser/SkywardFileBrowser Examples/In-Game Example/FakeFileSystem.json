@@ -1,0 +1,40 @@
+﻿{
+    "fileSystem": {
+        "root": {
+            "name": "/",
+            "contents": [
+                {
+                    "folder": {
+                        "name": "Images",
+                        "contents": [
+                            {
+                                "file": {
+                                    "name": "background",
+                                    "extension": "jpg"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "folder": {
+                        "name": "Documents",
+                        "contents": [
+                            {
+                                "file": {
+                                    "name": "employees",
+                                    "extension": "txt",
+                                    "hidden": "true"
+                                },
+                                "file": {
+                                    "name": "colleague email adresses",
+                                    "extension": "txt"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

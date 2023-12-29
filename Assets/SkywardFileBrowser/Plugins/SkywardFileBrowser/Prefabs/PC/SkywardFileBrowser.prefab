@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &119378
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 449334}
+  - component: {fileID: 11405808}
+  m_Layer: 0
+  m_Name: SkywardFileBrowser
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &449334
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119378}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &11405808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec2f9024b8f53ff4582eabae62b2a9ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabCanvas: {fileID: 196892, guid: c6a4c2c2491165c438501f37c4b8e915, type: 3}
+  prefabWindow: {fileID: 112760, guid: 473c3bcf69cc9a541881a79d1d5c946a, type: 3}
+  prefabPromtDelete: {fileID: 196022, guid: 347fc4be1a46d074099a980c7761153c, type: 3}
+  prefabPromtNewFolder: {fileID: 170050, guid: a416a6678c3e36444b188f18ad056615, type: 3}
+  prefabPromtOverwrite: {fileID: 196022, guid: ccfbdd16e770c1949a57e4fb3a5dba06, type: 3}
+  prefabPromtWarning: {fileID: 194636, guid: 9dd36884daea94442bfb722a58c32e59, type: 3}
+  prefabLoadingAnimation: {fileID: 188520, guid: b0852e706906b98479236c781a18f5e3,
+    type: 3}
+  prefabTooltip: {fileID: 127888, guid: f516f4e18fcea4847a3a9303c5e0f627, type: 3}

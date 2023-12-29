@@ -1,0 +1,50 @@
+Listed icons made by Freepik from www.flaticon.com
+
+http://www.freepik.com
+http://www.flaticon.com
+
+Licensed under CC BY 3.0
+http://creativecommons.org/licenses/by/3.0/
+
+
+Icons:
+SkywardFileBrowserNewFolder.png - modified: Added a plus
+http://www.flaticon.com/free-icon/file-folder_66742
+
+SkywardFileBrowserBack.png
+http://www.flaticon.com/free-icon/arrow-pointing-to-left_66822
+
+SkywardFileBrowserComputer.png - modified: Moved computer case in icon in front of screen
+http://www.flaticon.com/free-icon/personal-computer_68775
+
+SkywardFileBrowserDelete.png
+http://www.flaticon.com/free-icon/dustbin_66794
+
+SkywardFileBrowserFavorite.png
+http://www.flaticon.com/free-icon/star_66829
+
+SkywardFileBrowserFile.png
+http://www.flaticon.com/free-icon/paper-note_66937
+
+SkywardFileBrowserFolder.png
+http://www.flaticon.com/free-icon/file-folder_66742
+
+SkywardFileBrowserForward.png
+http://www.flaticon.com/free-icon/arrow-pointing-to-right_66831
+
+SkywardFileBrowserHome.png
+http://www.flaticon.com/free-icon/homepage_66760
+
+SkywardFileBrowserMissing.png - modified: Changed color to white
+http://www.flaticon.com/free-icon/question-mark_66788
+
+SkywardFileBrowserRecent.png
+http://www.flaticon.com/free-icon/compass_66877
+
+SkywardFileBrowserReload.png
+http://www.flaticon.com/free-icon/update-arrow_66758
+
+SkywardFileBrowserUp.png
+http://www.flaticon.com/free-icon/arrow-pointing-to-up_66757
+
+
