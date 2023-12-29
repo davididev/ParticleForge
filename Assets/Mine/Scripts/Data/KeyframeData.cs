@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 
 [System.Serializable]
-public class KeyframeData<T> 
+public class KeyframeData<T>
 {
     [SerializeField]
     public int FrameNum = 1;
@@ -12,7 +12,11 @@ public class KeyframeData<T>
     [SerializeField]
     public T State;
 
-
+    public KeyframeData(int frame, T data)
+    {
+        FrameNum = frame;
+        State = data;
+    }
     
 }
 public class FrameNumComparer<T> : IComparer<KeyframeData<T>>

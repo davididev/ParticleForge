@@ -17,6 +17,7 @@ public class PartFile
     public void NewFile(string FileName)
     {
         Instance = new PartFile();
+        KeyFrames.NewFile();
         SaveFile(FileName);
     }
 

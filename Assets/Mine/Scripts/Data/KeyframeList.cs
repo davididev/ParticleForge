@@ -37,5 +37,28 @@ public class KeyframeList
         ShapeKeyframes.Sort(comparer5);
     }
 
+    /// <summary>
+    /// Create the default object, will add the vertices code later
+    /// </summary>
+    public void NewFile(int vertices = 500)
+    {
+        KeyframeData<Vector3> firstRot = new KeyframeData<Vector3>(1, new Vector3(-90f, 0f, 0f));
+        RotationKeyframes.Add(firstRot);
+
+        KeyframeData<Vector2> firstPos = new KeyframeData<Vector2>(1, Vector2.zero);
+        PositionKeyframes.Add(firstPos);
+
+        KeyframeData<Vector2> firstNoiseOffset = new KeyframeData<Vector2>(1, Vector2.zero);
+        NoiseTextureKeyframes.Add(firstNoiseOffset);
+
+        KeyframeData<Color> firstColor = new KeyframeData<Color>(1, Color.white);
+        ColorKeyframes.Add(firstColor);
+
+        ShapeData.MAX_VERTICES = vertices;
+
+        KeyframeData<ShapeData> firstShape = new KeyframeData<ShapeData>(1, new ShapeData());
+        ShapeKeyframes.Add(firstShape);
+    }
+
 
 }
