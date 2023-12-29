@@ -36,6 +36,60 @@ public class KeyframeList
         var comparer5 = new FrameNumComparer<ShapeData>();
         ShapeKeyframes.Sort(comparer5);
     }
+    /// <summary>
+    /// Called whenever a rotation is changed
+    /// </summary>
+    /// <param name="frameNum">Frame number in timeline</param>
+    /// <param name="rot">Object to set to</param>
+    public void AddKeyframeRotation(int frameNum, Vector3 rot)
+    {
+        KeyframeData<Vector3>.AddOrUpdate(frameNum, rot, RotationKeyframes);
+        SortAll();
+    }
+
+    /// <summary>
+    /// Called whenever object mode position is updated
+    /// </summary>
+    /// <param name="frameNum">Frame number in the timeline</param>
+    /// <param name="pos">Position to set to</param>
+    public void AddKeyframePosition(int frameNum, Vector2 pos)
+    {
+        KeyframeData<Vector2>.AddOrUpdate(frameNum, pos, PositionKeyframes);
+        SortAll();
+    }
+
+    /// <summary>
+    /// Called whenever texture offset is updated
+    /// </summary>
+    /// <param name="frameNum">Frame number in the timeline</param>
+    /// <param name="pos">Position to set to</param>
+    public void AddKeyframeNoiseOffset(int frameNum, Vector2 pos)
+    {
+        KeyframeData<Vector2>.AddOrUpdate(frameNum, pos, NoiseTextureKeyframes);
+        SortAll();
+    }
+
+    /// <summary>
+    /// Called whenever color is updated
+    /// </summary>
+    /// <param name="frameNum">Frame number in the timeline</param>
+    /// <param name="pos">Position to set to</param>
+    public void AddKeyframeColor(int frameNum, Color c)
+    {
+        KeyframeData<Color>.AddOrUpdate(frameNum, c, ColorKeyframes);
+        SortAll();
+    }
+
+    /// <summary>
+    /// Called whenever a vertex is updated.  Should be called AFTER the mouse exits
+    /// </summary>
+    /// <param name="frameNum">Frame number in the timeline</param>
+    /// <param name="pos">Position to set to</param>
+    public void AddKeyVertexUpdated(int frameNum, ShapeData shape)
+    {
+        KeyframeData<ShapeData>.AddOrUpdate(frameNum, shape, ShapeKeyframes);
+        SortAll();
+    }
 
     /// <summary>
     /// Create the default object, will add the vertices code later
