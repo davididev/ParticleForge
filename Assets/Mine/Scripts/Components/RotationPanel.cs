@@ -29,7 +29,7 @@ public class RotationPanel : MonoBehaviour
         RotationEulerText[2].text = currentFrame.z.ToString();
 
         if (refToShape.CurrentShape != null)
-            refToShape.CurrentShape.transform.eulerAngles = currentFrame;
+            refToShape.CurrentShape.transform.localEulerAngles = currentFrame;
         
     }
 
@@ -43,15 +43,15 @@ public class RotationPanel : MonoBehaviour
     IEnumerator PreviewEulerRoutine()
     {
         KeyframeMainWindow.PreviewEffect = true;
-        Vector3 prevAngles = refToShape.CurrentShape.transform.eulerAngles;
+        Vector3 prevAngles = refToShape.CurrentShape.transform.localEulerAngles;
         Vector3 v = Vector3.zero;
         v.x = float.Parse(RotationEulerText[0].text);
         v.y = float.Parse(RotationEulerText[1].text);
         v.z = float.Parse(RotationEulerText[2].text);
-        refToShape.CurrentShape.transform.eulerAngles = v;
+        refToShape.CurrentShape.transform.localEulerAngles = v;
         yield return new WaitForSeconds(0.5f);
 
-        refToShape.CurrentShape.transform.eulerAngles = prevAngles;
+        refToShape.CurrentShape.transform.localEulerAngles = prevAngles;
         KeyframeMainWindow.PreviewEffect = false;
     }
 
