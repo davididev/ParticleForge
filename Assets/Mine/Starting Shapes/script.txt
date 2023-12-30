@@ -1,0 +1,8 @@
+ // Calculate the gradient based on the UV coordinates
+   float gradient = length(uv - 0.5f);
+   
+   // Apply the threshold to the gradient
+   gradient = smoothstep(threshold, 1.0f, gradient);
+   
+   // Set the color based on the gradient
+   color = float4(gradient, gradient, gradient, 1.0f);
