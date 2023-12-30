@@ -6,6 +6,8 @@ public class StartingShapeHolder : MonoBehaviour
 {
     public GameObject[] StartingShapes;
     private Vector3[] StartingVertices;
+
+    public GameObject CurrentShape { private set; get; }
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +19,7 @@ public class StartingShapeHolder : MonoBehaviour
         }
 
         StartingVertices = StartingShapes[id].GetComponent<MeshFilter>().mesh.vertices;
+        CurrentShape = StartingShapes[id];
     }
 
     // Update is called once per frame

@@ -41,6 +41,13 @@ public class KeyframeList
 
         var comparer6 = new FrameNumComparer<float>();
         FresnelKeyframes.Sort(comparer6);
+
+        KeyframeMainWindow window = KeyframeMainWindow.GetInstance();
+        if(window != null)
+        {
+            window.UpdateKeyframes();
+        }
+
     }
     /// <summary>
     /// Called whenever a rotation is changed
@@ -50,6 +57,7 @@ public class KeyframeList
     public void AddKeyframeRotation(int frameNum, Vector3 rot)
     {
         KeyframeData<Vector3>.AddOrUpdate(frameNum, rot, RotationKeyframes);
+
         SortAll();
     }
 

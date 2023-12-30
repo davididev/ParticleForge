@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class KeyframeMainWindow : MonoBehaviour
 {
+
+    public static bool PreviewEffect = false;
     public RectTransform CursorPosition;
     public RectTransform BackgroundOfTimeline;
     public GameObject MarkerPrefab;
     private GameObject[] MarkerGameObjects;
+    public GameObject[] EditingWindows;
     public TMPro.TMP_Dropdown DropdownObjectMode;
     public TMPro.TextMeshProUGUI FrameNumberText, FrameTypeText;
-    private int SelectedFrame = 1;
+    public static int SelectedFrame = 1;
     public enum OBJECT_MODE { Vertex, Rotation, Position, NoiseOffset, SetColor, Fresnel};
     public OBJECT_MODE CurrentMode = OBJECT_MODE.Rotation;
     // Start is called before the first frame update
@@ -31,6 +34,13 @@ public class KeyframeMainWindow : MonoBehaviour
         Vector2 delta = BackgroundOfTimeline.sizeDelta;
         delta.x = 12f * PartFile.GetInstance().FrameCount;
         BackgroundOfTimeline.sizeDelta = delta;
+
+        UpdateDropdown();
+    }
+
+    public static KeyframeMainWindow GetInstance()
+    {
+        return GameObject.FindWithTag("MainWindow").GetComponent<KeyframeMainWindow>();
     }
 
     /// <summary>
@@ -39,6 +49,54 @@ public class KeyframeMainWindow : MonoBehaviour
     public void RefreshObjectState()
     {
         //Add functionality here 
+        for (int i = 0; i < EditingWindows.Length; i++)
+        {
+            if (EditingWindows[i].activeInHierarchy == true)
+                EditingWindows[i].SendMessage("RefreshTimeline", SendMessageOptions.DontRequireReceiver);
+        }
+    }
+
+    /// <summary>
+    /// Called whenever a new keyframe is added or dropdown is changed
+    /// </summary>
+    public void UpdateKeyframes()
+    {
+        int[] keyframes = new int[1];
+        if (CurrentMode == OBJECT_MODE.Rotation)
+            keyframes = KeyframeData<Vector3>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.RotationKeyframes);
+        if (CurrentMode == OBJECT_MODE.Position)
+            keyframes = KeyframeData<Vector2>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.PositionKeyframes);
+        if (CurrentMode == OBJECT_MODE.NoiseOffset)
+            keyframes = KeyframeData<Vector2>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.NoiseTextureKeyframes);
+        if (CurrentMode == OBJECT_MODE.SetColor)
+            keyframes = KeyframeData<Color>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.ColorKeyframes);
+        if (CurrentMode == OBJECT_MODE.Vertex)
+            keyframes = KeyframeData<ShapeData>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.ShapeKeyframes);
+        if (CurrentMode == OBJECT_MODE.Fresnel)
+            keyframes = KeyframeData<float>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.FresnelKeyframes);
+        int i = 0; //i is the number of keyframes in the current mode
+        for(int x = 1; x < 64; x++)  //x is the number of total markers of all possible keyframes
+        {
+            if(i >= keyframes.Length)
+            {
+                MarkerGameObjects[x-1].SetActive(false);
+            }
+            else
+            {
+                if (keyframes[i] == x)
+                {
+                    MarkerGameObjects[x-1].SetActive(true);
+                    i++;
+                }
+                else
+                {
+                    MarkerGameObjects[x-1].SetActive(false);
+                }
+            }
+            
+                
+        }
+        //RefreshObjectState();
     }
 
     // Update is called once per frame
@@ -49,26 +107,35 @@ public class KeyframeMainWindow : MonoBehaviour
 
     void UpdateFrameNumber()
     {
+        bool changedPos = false;
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
+            changedPos = true;
             SelectedFrame++;
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            changedPos = true;
             SelectedFrame--;
         }
         SelectedFrame = Mathf.Clamp(SelectedFrame, 1, PartFile.GetInstance().FrameCount);
 
-        Vector3 localPos = CursorPosition.localPosition;
-        localPos.x = (SelectedFrame - 1) * 12.0f;
-        CursorPosition.localPosition = localPos;
+        if(changedPos == true)
+        {
+            Vector3 localPos = CursorPosition.localPosition;
+            localPos.x = (SelectedFrame - 1) * 12.0f;
+            CursorPosition.localPosition = localPos;
 
-        FrameNumberText.text = "F: " + SelectedFrame + " / " + PartFile.GetInstance().FrameCount;
-        RefreshObjectState();
+            FrameNumberText.text = "F: " + SelectedFrame + " / " + PartFile.GetInstance().FrameCount;
+            RefreshObjectState();
+        }
+
+        
     }
 
     public void UpdateDropdown()
     {
+        
         int id = DropdownObjectMode.value;
         if (id == 0)
             DropdownRotationSelected();
@@ -82,6 +149,13 @@ public class KeyframeMainWindow : MonoBehaviour
             DropdownFresnelSelected();
         if (id == 5)
             DropdownVertexSelected();
+
+        for (int i = 0; i < EditingWindows.Length; i++)
+        {
+            EditingWindows[i].SetActive(i == id);
+        }
+        UpdateKeyframes();
+        RefreshObjectState();
     }
 
     public void DropdownRotationSelected()

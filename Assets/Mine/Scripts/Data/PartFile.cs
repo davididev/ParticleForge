@@ -9,11 +9,17 @@ public class PartFile
     public string NoiseDirectory = "";
     public Color StartingColor = Color.white;
     public float FrameSize = 32f;
-    public int FrameCount = 4;
+    public int FrameCount = 16;
     public int ShapeID = 0;
     public KeyframeList KeyFrames;
 
     private static PartFile Instance;
+
+    public PartFile()
+    {
+        KeyFrames = new KeyframeList();
+        KeyFrames.NewFile();
+    }
 
     public void NewFile(string FileName)
     {
