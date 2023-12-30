@@ -10,6 +10,7 @@ public class PartFile
     public Color StartingColor = Color.white;
     public float FrameSize = 32f;
     public int FrameCount = 4;
+    public int ShapeID = 0;
     public KeyframeList KeyFrames;
 
     private static PartFile Instance;
