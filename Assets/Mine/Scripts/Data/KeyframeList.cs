@@ -122,7 +122,7 @@ public class KeyframeList
     /// </summary>
     public void NewFile(int vertices = 500)
     {
-        KeyframeData<Vector3> firstRot = new KeyframeData<Vector3>(1, new Vector3(-90f, 0f, 0f));
+        KeyframeData<Vector3> firstRot = new KeyframeData<Vector3>(1, new Vector3(-90f, 90f, -90f));
         RotationKeyframes.Add(firstRot);
 
         KeyframeData<Vector2> firstPos = new KeyframeData<Vector2>(1, Vector2.zero);
