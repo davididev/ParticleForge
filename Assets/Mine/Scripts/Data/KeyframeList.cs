@@ -16,6 +16,9 @@ public class KeyframeList
     [SerializeField]
     public List<KeyframeData<ShapeData>> ShapeKeyframes = new List<KeyframeData<ShapeData>>();
 
+    [SerializeField]
+    public List<KeyframeData<float>> FresnelKeyframes = new List<KeyframeData<float>>();
+
     /// <summary>
     /// Called every time we add, delete, or move a keyframe
     /// </summary>
@@ -35,6 +38,9 @@ public class KeyframeList
 
         var comparer5 = new FrameNumComparer<ShapeData>();
         ShapeKeyframes.Sort(comparer5);
+
+        var comparer6 = new FrameNumComparer<float>();
+        FresnelKeyframes.Sort(comparer6);
     }
     /// <summary>
     /// Called whenever a rotation is changed
@@ -91,6 +97,18 @@ public class KeyframeList
         SortAll();
     }
 
+
+    /// <summary>
+    /// Called whenever fresnel is updated.  Should be called AFTER the mouse exits
+    /// </summary>
+    /// <param name="frameNum">Frame number in the timeline</param>
+    /// <param name="threshold">-1f to 1f, for fade</param>
+    public void AddKeyFresnel(int frameNum, float threshold)
+    {
+        KeyframeData<float>.AddOrUpdate(frameNum, threshold, FresnelKeyframes);
+        SortAll();
+    }
+
     /// <summary>
     /// Create the default object, will add the vertices code later
     /// </summary>
@@ -107,6 +125,9 @@ public class KeyframeList
 
         KeyframeData<Color> firstColor = new KeyframeData<Color>(1, Color.white);
         ColorKeyframes.Add(firstColor);
+
+        KeyframeData<float> firstFresnold = new KeyframeData<float>(1, 1f);
+        FresnelKeyframes.Add(firstFresnold);
 
         ShapeData.MAX_VERTICES = vertices;
 
