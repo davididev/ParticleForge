@@ -85,7 +85,7 @@ public class KeyframeData<T>
                 int wholePerc = (e1.Current.FrameNum - frame) * 100 / (e1.Current.FrameNum - prevKeyframe);
                 lerp = wholePerc / 100f;
                 lerp = 1f - lerp;  //Invert it, dunno why it doesn't do it this way
-                Debug.Log(Time.time + ": Getting lerp: " + frame + " vs prev: " + prevKeyframe + "; right: " + e1.Current.FrameNum + ": " + lerp);
+                //Debug.Log(Time.time + ": Getting lerp: " + frame + " vs prev: " + prevKeyframe + "; right: " + e1.Current.FrameNum + ": " + lerp);
                 data2 = e1.Current.State;
                 return;
             }
