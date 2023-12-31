@@ -22,6 +22,7 @@ public class StartingShapeHolder : MonoBehaviour
         CurrentShape = StartingShapes[id];
     }
 
+
     // Update is called once per frame
     void Update()
     {

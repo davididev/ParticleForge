@@ -9,12 +9,26 @@ public class RotationPanel : MonoBehaviour
     public TMPro.TMP_InputField[] RotationEulerText;
     void OnEnable()
     {
-        RefreshTimeline();
+        //RefreshTimeline();
+        RefreshUI();
     }
 
-    /// <summary>
-    /// Message that should be called every time we change the position on the timeline
-    /// </summary>
+    void RefreshUI()  //Refresh the UI when a keyframe is added or timeline is moving
+    {
+        List<KeyframeData<Vector3>> tempData = PartFile.GetInstance().KeyFrames.RotationKeyframes;
+        Vector3 rot1 = Vector3.zero;
+        Vector3 rot2 = Vector3.zero;
+        float lerp = 0f;
+        KeyframeData<Vector3>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out rot1, out rot2, out lerp, tempData);
+        Vector3 currentFrame = Vector3.Lerp(rot1, rot2, lerp);
+
+        RotationEulerText[0].text = currentFrame.x.ToString();
+        RotationEulerText[1].text = currentFrame.y.ToString();
+        RotationEulerText[2].text = currentFrame.z.ToString();
+    }
+
+    //We're moving this to StartingShapeHolder
+    /*
     void RefreshTimeline()
     {
         List<KeyframeData<Vector3>> tempData = PartFile.GetInstance().KeyFrames.RotationKeyframes;
@@ -32,6 +46,7 @@ public class RotationPanel : MonoBehaviour
             refToShape.CurrentShape.transform.localEulerAngles = currentFrame;
         
     }
+    */
 
     public void PreviewEuler()
     {

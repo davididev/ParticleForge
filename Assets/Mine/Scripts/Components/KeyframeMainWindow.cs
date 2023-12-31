@@ -8,6 +8,7 @@ public class KeyframeMainWindow : MonoBehaviour
     public static bool PreviewEffect = false;
     public RectTransform CursorPosition;
     public RectTransform BackgroundOfTimeline;
+    public StartingShapeHolder refToShape;
     public GameObject MarkerPrefab;
     private GameObject[] MarkerGameObjects;
     public GameObject[] EditingWindows;
@@ -52,12 +53,43 @@ public class KeyframeMainWindow : MonoBehaviour
         for (int i = 0; i < EditingWindows.Length; i++)
         {
             if (EditingWindows[i].activeInHierarchy == true)
-                EditingWindows[i].SendMessage("RefreshTimeline", SendMessageOptions.DontRequireReceiver);
+                EditingWindows[i].SendMessage("RefreshUI", SendMessageOptions.DontRequireReceiver);
+        }
+
+        if (CurrentMode == KeyframeMainWindow.OBJECT_MODE.Vertex)  //Vertex mode- do default change the euler angles
+        {
+            if (refToShape.CurrentShape != null)
+                refToShape.CurrentShape.transform.localEulerAngles = new Vector3(-90f, 90f, -90f);
+            
+            //Show wireframe
+            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_WireframeThreshold", 1f);
+
+            //Todo- make moveable points
+        }
+        else  //Anything other than vertex mode
+        {
+            //Hide wireframe
+            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_WireframeThreshold", 0f);
+
+            //Set rotation
+            List<KeyframeData<Vector3>> tempData = PartFile.GetInstance().KeyFrames.RotationKeyframes;
+            Vector3 rot1 = Vector3.zero;
+            Vector3 rot2 = Vector3.zero;
+            float lerp = 0f;
+            KeyframeData<Vector3>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out rot1, out rot2, out lerp, tempData);
+            Vector3 currentFrame = Vector3.Lerp(rot1, rot2, lerp);
+
+            //RotationEulerText[0].text = currentFrame.x.ToString();
+            //RotationEulerText[1].text = currentFrame.y.ToString();
+            //RotationEulerText[2].text = currentFrame.z.ToString();
+            
+            if (refToShape.CurrentShape != null)
+                refToShape.CurrentShape.transform.localEulerAngles = currentFrame;
         }
     }
 
     /// <summary>
-    /// Called whenever a new keyframe is added or dropdown is changed
+    /// Called whenever a new keyframe is added or dropdown is changed; redraws the markers
     /// </summary>
     public void UpdateKeyframes()
     {
