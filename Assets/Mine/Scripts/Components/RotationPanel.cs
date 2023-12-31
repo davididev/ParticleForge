@@ -9,8 +9,6 @@ public class RotationPanel : MonoBehaviour
     public TMPro.TMP_InputField[] RotationEulerText;
     void OnEnable()
     {
-        //RefreshTimeline();
-        RefreshUI();
     }
 
     void RefreshUI()  //Refresh the UI when a keyframe is added or timeline is moving

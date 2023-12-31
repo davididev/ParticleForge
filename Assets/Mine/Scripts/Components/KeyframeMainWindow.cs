@@ -56,6 +56,9 @@ public class KeyframeMainWindow : MonoBehaviour
                 EditingWindows[i].SendMessage("RefreshUI", SendMessageOptions.DontRequireReceiver);
         }
 
+        if (refToShape.CurrentShape == null)
+            return;
+
         if (CurrentMode == KeyframeMainWindow.OBJECT_MODE.Vertex)  //Vertex mode- do default change the euler angles
         {
             if (refToShape.CurrentShape != null)
@@ -69,13 +72,14 @@ public class KeyframeMainWindow : MonoBehaviour
         else  //Anything other than vertex mode
         {
             //Hide wireframe
+            float lerp = 0f;  //This will be used by all functions
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_WireframeThreshold", 0f);
 
             //Set rotation
             List<KeyframeData<Vector3>> tempData = PartFile.GetInstance().KeyFrames.RotationKeyframes;
             Vector3 rot1 = Vector3.zero;
             Vector3 rot2 = Vector3.zero;
-            float lerp = 0f;
+            
             KeyframeData<Vector3>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out rot1, out rot2, out lerp, tempData);
             Vector3 currentFrame = Vector3.Lerp(rot1, rot2, lerp);
 
@@ -85,6 +89,18 @@ public class KeyframeMainWindow : MonoBehaviour
             
             if (refToShape.CurrentShape != null)
                 refToShape.CurrentShape.transform.localEulerAngles = currentFrame;
+
+            //Set fresnel threshold
+            List<KeyframeData<float>> tempData2 = PartFile.GetInstance().KeyFrames.FresnelKeyframes;
+            float fres1 = 0f;
+            float fres2 = 0f;
+
+            KeyframeData<float>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out fres1, out fres2, out lerp, tempData2);
+            float currentFres = Mathf.Lerp(fres1, fres2, lerp);
+            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_FresnelThreshold", currentFres);
+
+            //Not in vertex mode- close the wireframe
+            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_WireframeThreshold", 0f);
         }
     }
 
@@ -172,13 +188,13 @@ public class KeyframeMainWindow : MonoBehaviour
         if (id == 0)
             DropdownRotationSelected();
         if (id == 1)
-            DropdownPositionSelected();
+            DropdownFresnelSelected(); 
         if (id == 2)
-            DropdownNoiseOffsetSelected();
+            DropdownPositionSelected(); 
         if (id == 3)
             DropdownColorSelected();
         if (id == 4)
-            DropdownFresnelSelected();
+            DropdownNoiseOffsetSelected();
         if (id == 5)
             DropdownVertexSelected();
 
