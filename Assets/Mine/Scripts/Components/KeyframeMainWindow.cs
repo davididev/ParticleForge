@@ -92,8 +92,8 @@ public class KeyframeMainWindow : MonoBehaviour
             KeyframeData<Vector2>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out pos1, out pos2, out lerp, tempData6);
             Vector2 currentFramePos = Vector3.Lerp(pos1, pos2, lerp);
             TransformArrow.NewWorldPosition = new Vector3(currentFramePos.x, currentFramePos.y, 0f);
-            
-            
+            refToShape.transform.position = TransformArrow.NewWorldPosition;
+
             //Set fresnel threshold
             List<KeyframeData<float>> tempData2 = PartFile.GetInstance().KeyFrames.FresnelKeyframes;
             float fres1 = 0f;
