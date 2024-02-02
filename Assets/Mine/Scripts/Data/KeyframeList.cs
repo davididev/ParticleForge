@@ -19,6 +19,13 @@ public class KeyframeList
     [SerializeField]
     public List<KeyframeData<float>> FresnelKeyframes = new List<KeyframeData<float>>();
 
+    [SerializeField]
+    public List<KeyframeData<Vector3>> DirectionalLightRotationKeyframes = new List<KeyframeData<Vector3>>();
+    [SerializeField]
+    public List<KeyframeData<float>> DirectionalLightIntensityKeys = new List<KeyframeData<float>>();
+    [SerializeField]
+    public List<KeyframeData<float>> SceneLightIntensityKeys = new List<KeyframeData<float>>();
+
     /// <summary>
     /// Called every time we add, delete, or move a keyframe
     /// </summary>
@@ -41,6 +48,10 @@ public class KeyframeList
 
         var comparer6 = new FrameNumComparer<float>();
         FresnelKeyframes.Sort(comparer6);
+
+        DirectionalLightRotationKeyframes.Sort(comparer1);  //Vector3 comparer
+        DirectionalLightIntensityKeys.Sort(comparer6);  //Float comparer
+        SceneLightIntensityKeys.Sort(comparer6);  //Float comparer
 
         KeyframeMainWindow window = KeyframeMainWindow.GetInstance();
         if(window != null)
@@ -141,7 +152,17 @@ public class KeyframeList
 
         KeyframeData<ShapeData> firstShape = new KeyframeData<ShapeData>(1, new ShapeData());
         ShapeKeyframes.Add(firstShape);
-    }
+
+
+        KeyframeData<Vector3> firstLightRot = new KeyframeData<Vector3>(1, new Vector3(0f, 180f, 0f));
+        DirectionalLightRotationKeyframes.Add(firstLightRot);
+
+        KeyframeData<float> firstLightIntensity = new KeyframeData<float>(1, 0f);
+        DirectionalLightIntensityKeys.Add(firstLightIntensity);
+
+        KeyframeData<float> firstLightIntensity2 = new KeyframeData<float>(1, 1f);
+        SceneLightIntensityKeys.Add(firstLightIntensity2);
+    }   
 
 
 }

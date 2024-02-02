@@ -6,6 +6,7 @@ public class KeyframeMainWindow : MonoBehaviour
 {
 
     public static bool PreviewEffect = false;
+    public Light LightRef;
     public RectTransform CursorPosition;
     public RectTransform BackgroundOfTimeline;
     public StartingShapeHolder refToShape;
@@ -15,7 +16,7 @@ public class KeyframeMainWindow : MonoBehaviour
     public TMPro.TMP_Dropdown DropdownObjectMode;
     public TMPro.TextMeshProUGUI FrameNumberText, FrameTypeText;
     public static int SelectedFrame = 1;
-    public enum OBJECT_MODE { Vertex, Rotation, Position, NoiseOffset, SetColor, Fresnel};
+    public enum OBJECT_MODE { Vertex, Rotation, Position, NoiseOffset, SetColor, Fresnel, Lighting1, Lighting2, Lighting3};
     public OBJECT_MODE CurrentMode = OBJECT_MODE.Rotation;
     // Start is called before the first frame update
     void Start()
@@ -90,6 +91,7 @@ public class KeyframeMainWindow : MonoBehaviour
             if (refToShape.CurrentShape != null)
                 refToShape.CurrentShape.transform.localEulerAngles = currentFrame;
 
+
             //Set fresnel threshold
             List<KeyframeData<float>> tempData2 = PartFile.GetInstance().KeyFrames.FresnelKeyframes;
             float fres1 = 0f;
@@ -98,6 +100,20 @@ public class KeyframeMainWindow : MonoBehaviour
             KeyframeData<float>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out fres1, out fres2, out lerp, tempData2);
             float currentFres = Mathf.Lerp(fres1, fres2, lerp);
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_FresnelThreshold", currentFres);
+
+            //Set light settings
+            List<KeyframeData<Vector3>> tempData3 = PartFile.GetInstance().KeyFrames.DirectionalLightRotationKeyframes;
+            KeyframeData<Vector3>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out rot1, out rot2, out lerp, tempData3);
+            Vector3 CurrentLightRotation = Vector3.Lerp(rot1, rot2, lerp);
+            LightRef.transform.localEulerAngles = CurrentLightRotation;
+
+            List<KeyframeData<float>> tempData4 = PartFile.GetInstance().KeyFrames.DirectionalLightIntensityKeys;
+            KeyframeData<float>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out fres1, out fres2, out lerp, tempData4);
+            LightRef.intensity = Mathf.Lerp(fres1, fres2, lerp);
+
+            List<KeyframeData<float>> tempData5 = PartFile.GetInstance().KeyFrames.SceneLightIntensityKeys;
+            KeyframeData<float>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out fres1, out fres2, out lerp, tempData5);
+            RenderSettings.ambientLight = Color.white * Mathf.Lerp(fres1, fres2, lerp);
 
             //Not in vertex mode- close the wireframe
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_WireframeThreshold", 0f);
@@ -197,6 +213,12 @@ public class KeyframeMainWindow : MonoBehaviour
             DropdownNoiseOffsetSelected();
         if (id == 5)
             DropdownVertexSelected();
+        if (id == 6)
+            DropdownLightingDetected1();
+        if (id == 7)
+            DropdownLightingDetected2();
+        if (id == 8)
+            DropdownLightingDetected3();
 
         for (int i = 0; i < EditingWindows.Length; i++)
         {
@@ -240,5 +262,21 @@ public class KeyframeMainWindow : MonoBehaviour
     {
         CurrentMode = OBJECT_MODE.Vertex;
         FrameTypeText.text = "Keyframes: Shape";
+    }
+
+    public void DropdownLightingDetected1()
+    {
+        CurrentMode = OBJECT_MODE.Lighting1;
+        FrameTypeText.text = "Keyframes: Lighting Direction";
+    }
+    public void DropdownLightingDetected2()
+    {
+        CurrentMode = OBJECT_MODE.Lighting2;
+        FrameTypeText.text = "Keyframes: Lighting Intensity";
+    }
+    public void DropdownLightingDetected3()
+    {
+        CurrentMode = OBJECT_MODE.Lighting3;
+        FrameTypeText.text = "Keyframes: Ambient Intensity";
     }
 }
