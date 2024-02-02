@@ -52,7 +52,7 @@ public class SetDiffuseColorPanel : MonoBehaviour
     void OnEnable()
     {
         //CurrentColor = Color.white;
-        LastKeyframeColor = KeyframeColor;
+        CurrentColor = KeyframeColor;
         SetUIValues();
     }
 

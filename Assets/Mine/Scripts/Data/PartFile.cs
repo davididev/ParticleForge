@@ -64,7 +64,7 @@ public class PartFile
         if (lastIndex <= 0)
             lastIndex = FileName.LastIndexOf('/');
         FileDirectory = FileName.Substring(0, lastIndex);
-
+        PlayerPrefs.SetString("LastFile", FileName);  //For editor purposes
     }
     public Texture2D LoadNoise(string NoiseDirectory)
     {
