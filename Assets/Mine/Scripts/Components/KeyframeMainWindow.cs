@@ -80,37 +80,40 @@ public class KeyframeMainWindow : MonoBehaviour
             List<KeyframeData<Vector3>> tempData = PartFile.GetInstance().KeyFrames.RotationKeyframes;
             Vector3 rot1 = Vector3.zero;
             Vector3 rot2 = Vector3.zero;
-            
             KeyframeData<Vector3>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out rot1, out rot2, out lerp, tempData);
-            Vector3 currentFrame = Vector3.Lerp(rot1, rot2, lerp);
-
-            //RotationEulerText[0].text = currentFrame.x.ToString();
-            //RotationEulerText[1].text = currentFrame.y.ToString();
-            //RotationEulerText[2].text = currentFrame.z.ToString();
-            
+            Vector3 currentFrame = Vector3.Lerp(rot1, rot2, lerp);        
             if (refToShape.CurrentShape != null)
                 refToShape.CurrentShape.transform.localEulerAngles = currentFrame;
 
-
+            //Set position
+            List<KeyframeData<Vector2>> tempData6 = PartFile.GetInstance().KeyFrames.PositionKeyframes;
+            Vector2 pos1 = Vector2.zero;
+            Vector2 pos2 = Vector2.zero;
+            KeyframeData<Vector2>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out pos1, out pos2, out lerp, tempData6);
+            Vector2 currentFramePos = Vector3.Lerp(pos1, pos2, lerp);
+            TransformArrow.NewWorldPosition = new Vector3(currentFramePos.x, currentFramePos.y, 0f);
+            
+            
             //Set fresnel threshold
             List<KeyframeData<float>> tempData2 = PartFile.GetInstance().KeyFrames.FresnelKeyframes;
             float fres1 = 0f;
             float fres2 = 0f;
-
             KeyframeData<float>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out fres1, out fres2, out lerp, tempData2);
             float currentFres = Mathf.Lerp(fres1, fres2, lerp);
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_FresnelThreshold", currentFres);
 
-            //Set light settings
+            //Set light settings (rotation)
             List<KeyframeData<Vector3>> tempData3 = PartFile.GetInstance().KeyFrames.DirectionalLightRotationKeyframes;
             KeyframeData<Vector3>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out rot1, out rot2, out lerp, tempData3);
             Vector3 CurrentLightRotation = Vector3.Lerp(rot1, rot2, lerp);
             LightRef.transform.localEulerAngles = CurrentLightRotation;
 
+            //Set light settings (intensity dir)
             List<KeyframeData<float>> tempData4 = PartFile.GetInstance().KeyFrames.DirectionalLightIntensityKeys;
             KeyframeData<float>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out fres1, out fres2, out lerp, tempData4);
             LightRef.intensity = Mathf.Lerp(fres1, fres2, lerp);
 
+            //Set light settings (scene dir)
             List<KeyframeData<float>> tempData5 = PartFile.GetInstance().KeyFrames.SceneLightIntensityKeys;
             KeyframeData<float>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out fres1, out fres2, out lerp, tempData5);
             RenderSettings.ambientLight = Color.white * Mathf.Lerp(fres1, fres2, lerp);

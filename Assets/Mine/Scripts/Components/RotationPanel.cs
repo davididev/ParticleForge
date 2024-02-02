@@ -11,6 +11,8 @@ public class RotationPanel : MonoBehaviour
     {
     }
 
+
+
     void RefreshUI()  //Refresh the UI when a keyframe is added or timeline is moving
     {
         List<KeyframeData<Vector3>> tempData = PartFile.GetInstance().KeyFrames.RotationKeyframes;
