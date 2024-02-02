@@ -21,6 +21,10 @@ public class KeyframeMainWindow : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(Application.isEditor)
+        {
+            PartFile.GetInstance().LoadFile(PlayerPrefs.GetString("LastFile"));
+        }
         MarkerGameObjects = new GameObject[64];
         MarkerGameObjects[0] = MarkerPrefab;
         for(int i = 1; i < 64; i++)
@@ -38,6 +42,11 @@ public class KeyframeMainWindow : MonoBehaviour
         BackgroundOfTimeline.sizeDelta = delta;
 
         UpdateDropdown();
+    }
+
+    public void SaveFileButton()
+    {
+        PartFile.GetInstance().SaveFile(PlayerPrefs.GetString("LastFile"));
     }
 
     public static KeyframeMainWindow GetInstance()
@@ -142,7 +151,7 @@ public class KeyframeMainWindow : MonoBehaviour
         if (CurrentMode == OBJECT_MODE.Fresnel)
             keyframes = KeyframeData<float>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.FresnelKeyframes);
         int i = 0; //i is the number of keyframes in the current mode
-        for(int x = 1; x < 64; x++)  //x is the number of total markers of all possible keyframes
+        for(int x = 1; x < 65; x++)  //x is the number of total markers of all possible keyframes
         {
             if(i >= keyframes.Length)
             {

@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Mine/Scenes/SelectFile.unity
+    guid: 2bf894f89234db543b33f1a79c59a0f6
+  - enabled: 1
     path: Assets/Mine/Scenes/ParticleEditor.unity
     guid: 581ff8127b0f0864ba5e109bdc97a103
   m_configObjects: {}
