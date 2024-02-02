@@ -127,8 +127,18 @@ public class KeyframeMainWindow : MonoBehaviour
             KeyframeData<float>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out fres1, out fres2, out lerp, tempData5);
             RenderSettings.ambientLight = Color.white * Mathf.Lerp(fres1, fres2, lerp);
 
+            //Set Diffuse Colors
+            List<KeyframeData<Color>> tempData7 = PartFile.GetInstance().KeyFrames.ColorKeyframes;
+            Color c1;
+            Color c2;
+            KeyframeData<Color>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out c1, out c2, out lerp, tempData7);
+            //RenderSettings.ambientLight = Mathf.Lerp(fres1, fres2, lerp);
+            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetColor("_DiffuseColor", Color.Lerp(c1, c2, lerp));
+            SetDiffuseColorPanel.KeyframeColor = Color.Lerp(c1, c2, lerp);
             //Not in vertex mode- close the wireframe
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_WireframeThreshold", 0f);
+
+            
         }
     }
 
