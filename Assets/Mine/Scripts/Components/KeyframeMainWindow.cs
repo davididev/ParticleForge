@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SkywardRay.FileBrowser;
 
 public class KeyframeMainWindow : MonoBehaviour
 {
-
+    public SkywardFileBrowser fileBrowser;
     public static bool PreviewEffect = false;
     public Light LightRef;
     public RectTransform CursorPosition;
@@ -25,6 +26,9 @@ public class KeyframeMainWindow : MonoBehaviour
         {
             PartFile.GetInstance().LoadFile(PlayerPrefs.GetString("LastFile"));
         }
+        Invoke("LoadNoise", 0.1f);
+
+
         MarkerGameObjects = new GameObject[64];
         MarkerGameObjects[0] = MarkerPrefab;
         for(int i = 1; i < 64; i++)
@@ -44,6 +48,12 @@ public class KeyframeMainWindow : MonoBehaviour
         UpdateDropdown();
     }
 
+    void LoadNoise()
+    {
+        Texture2D Noise = PartFile.GetInstance().LoadNoise();
+        refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
+    }
+
     public void SaveFileButton()
     {
         PartFile.GetInstance().SaveFile(PlayerPrefs.GetString("LastFile"));
@@ -52,6 +62,23 @@ public class KeyframeMainWindow : MonoBehaviour
     public static KeyframeMainWindow GetInstance()
     {
         return GameObject.FindWithTag("MainWindow").GetComponent<KeyframeMainWindow>();
+    }
+
+    public void LoadNoiseTextureButton()
+    {
+        string dir = DirectoryHelper.GetDirectoryOfFile(PlayerPrefs.GetString("LastFile"));
+        fileBrowser.OpenFile(dir, NoiseLoaded, new string[] { ".png", ".jpg" });
+    }
+
+    void NoiseLoaded(string[] output)
+    {
+        string dir1 = PlayerPrefs.GetString("LastFile");  //file we are currently in
+        dir1 = DirectoryHelper.GetDirectoryOfFile(dir1);
+        
+        string dir2 = output[0];
+        PartFile.GetInstance().NoiseDirectory = DirectoryHelper.GetRelativePath(dir1, dir2);
+        Texture2D Noise = PartFile.GetInstance().LoadNoise();
+        refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
     }
 
     /// <summary>

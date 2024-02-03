@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 [System.Serializable]
 public class PartFile
@@ -32,10 +33,7 @@ public class PartFile
 
     public void SaveFile(string FileName)
     {
-        int lastIndex = FileName.LastIndexOf('\\');
-        if(lastIndex <= 0)
-            lastIndex = FileName.LastIndexOf('/');
-        FileDirectory = FileName.Substring(0, lastIndex);
+        FileDirectory = DirectoryHelper.GetDirectoryOfFile(FileName);
 
         string fileExtension = FileName.Substring(FileName.Length - 4, 4);
         if (fileExtension != ".prt")
@@ -55,21 +53,52 @@ public class PartFile
         if (fileExtension != ".prt")
         {
             throw new System.IO.FileNotFoundException();
-            return;
         }
 
 
         Instance = JsonUtility.FromJson<PartFile>(System.IO.File.ReadAllText(FileName));
-        int lastIndex = FileName.LastIndexOf('\\');
-        if (lastIndex <= 0)
-            lastIndex = FileName.LastIndexOf('/');
-        FileDirectory = FileName.Substring(0, lastIndex);
+        FileDirectory = DirectoryHelper.GetDirectoryOfFile(FileName);
         PlayerPrefs.SetString("LastFile", FileName);  //For editor purposes
     }
-    public Texture2D LoadNoise(string NoiseDirectory)
+
+
+    public Texture2D LoadNoise()
     {
         //Will write code later
-        return null;
+        Texture2D newTex = new Texture2D((int)FrameSize, (int)FrameSize);
+        string dir = PlayerPrefs.GetString("LastFile");
+        dir = DirectoryHelper.GetDirectoryOfFile(dir);
+        Debug.Log("File directory: " + dir + "; " + NoiseDirectory);
+
+        if (NoiseDirectory != "")
+        {
+            string newDir = DirectoryHelper.CombineDirectories(dir, NoiseDirectory);
+            Debug.Log("New Dir: " + newDir);
+            if (File.Exists(newDir))
+            {
+                byte[] data = System.IO.File.ReadAllBytes(newDir);  //Relative to the file we're in
+                if (newTex.LoadImage(data))
+                {
+                    newTex.Apply();
+                    return newTex;
+                }
+            }   
+        }
+            
+        
+        
+
+        //Fail code here
+        Texture2D white = new Texture2D(32, 32);
+        for(int x = 0; x < white.width; x++)
+        {
+            for (int y = 0; y < white.height; y++)
+            {
+                white.SetPixel(x, y, Color.white);
+            }
+        }
+        white.Apply();
+        return white;
     }
 
     public static PartFile GetInstance()
