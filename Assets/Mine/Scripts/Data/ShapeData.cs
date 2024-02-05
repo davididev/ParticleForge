@@ -7,7 +7,7 @@ public class ShapeData
 {
     public static int MAX_VERTICES = 150;
     [SerializeField]
-    public List<Vector2> Vertices = new List<Vector2>();  //These are offsets, not world positions
+    public List<Vector3> Vertices = new List<Vector3>();  //These are offsets, not world positions
 
     /// <summary>
     /// Create default (empty)
@@ -16,7 +16,7 @@ public class ShapeData
     {
         for(int i = 0; i < MAX_VERTICES; i++)
         {
-            Vertices.Add(Vector2.zero);
+            Vertices.Add(Vector3.zero);
         }
     }
 
@@ -24,7 +24,7 @@ public class ShapeData
     /// Create from Mesh Editor
     /// </summary>
     /// <param name="verts">Offset from world cooridnates</param>
-    public ShapeData(Vector2[] verts)
+    public ShapeData(Vector3[] verts)
     {
         Vertices.Clear();
         for(int i = 0; i < verts.Length; i++)

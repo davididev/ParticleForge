@@ -20,6 +20,8 @@ public class StartingShapeHolder : MonoBehaviour
 
         StartingVertices = StartingShapes[id].GetComponent<MeshFilter>().mesh.vertices;
         CurrentShape = StartingShapes[id];
+        StartingVertices = CurrentShape.GetComponent<MeshFilter>().mesh.vertices;
+        PartFile.GetInstance().KeyFrames.AddKeyVertexUpdated(1, new ShapeData(StartingVertices));
     }
 
 

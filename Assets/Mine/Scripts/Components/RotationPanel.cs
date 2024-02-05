@@ -6,9 +6,16 @@ public class RotationPanel : MonoBehaviour
 {
     // Start is called before the first frame update
     public StartingShapeHolder refToShape;
+    public GameObject transformRotate;
     public TMPro.TMP_InputField[] RotationEulerText;
     void OnEnable()
     {
+        transformRotate.SetActive(true);
+    }
+
+    void OnDisable()
+    {
+        transformRotate.SetActive(false);
     }
 
 
@@ -82,6 +89,15 @@ public class RotationPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(TransformRotate.OffsetStep != Vector3.zero)  //Rotate circles have been used, rotate the object
+        {
+            refToShape.CurrentShape.transform.Rotate(TransformRotate.OffsetStep, Space.World);
+            TransformRotate.OffsetStep = Vector3.zero;
+            Vector3 newEulers = refToShape.CurrentShape.transform.localEulerAngles;
+
+            RotationEulerText[0].text = newEulers.x.ToString();
+            RotationEulerText[1].text = newEulers.y.ToString();
+            RotationEulerText[2].text = newEulers.z.ToString();
+        }
     }
 }
