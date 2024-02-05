@@ -11,6 +11,8 @@ public class TransformRotate : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public Image rend;
 
     private Vector2 startMousePosition;
+    private float lastDegree = 0f;
+    private float startingDegree = 0f;
     public static Vector3 OffsetStep = Vector3.zero;  //This should be obtained by a panel and then set back to zero once it has been obtained
 
     // Start is called before the first frame update
@@ -39,7 +41,8 @@ public class TransformRotate : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public void OnBeginDrag(PointerEventData eventData)
     {
         startMousePosition = eventData.position;
-        
+        lastDegree = 0f;
+        startingDegree = Mathf.Atan2(startMousePosition.y, startMousePosition.x) * Mathf.Rad2Deg;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -50,8 +53,8 @@ public class TransformRotate : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public void OnDrag(PointerEventData eventData)
     {
         Vector2 offset = startMousePosition - eventData.position;
-
-        Debug.Log("Offset of " + gameObject.name + ":" + offset);
+        
+        //Debug.Log("Offset of " + gameObject.name + ":" + offset);
 
         if (thisObjectOffset == OffsestDirection.X)
         {
@@ -78,6 +81,25 @@ public class TransformRotate : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 OffsetStep.x -= 15f;
                 startMousePosition = eventData.position;  //Reset the offset for the next rotate step
             }
+        }
+
+        if(thisObjectOffset == OffsestDirection.Z)
+        {
+            float newAngle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
+            float dif = Mathf.DeltaAngle(startingDegree, newAngle);
+            Debug.Log("Difference of angles: " + dif);
+            if (dif > 15f)
+            {
+                OffsetStep.z += 15;
+                startingDegree += 15;  
+            }
+            if (dif < -15f)
+            {
+                OffsetStep.z -= 15;
+                startingDegree -= 15;
+            }
+
+            
         }
     }
 }
