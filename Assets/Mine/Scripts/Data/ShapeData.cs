@@ -32,4 +32,25 @@ public class ShapeData
             Vertices.Add(verts[i]);
         }
     }
+
+    public ShapeData(List<Vector3> verts)
+    {
+        Vertices.Clear();
+        List<Vector3>.Enumerator e1 = verts.GetEnumerator();
+        while(e1.MoveNext())
+        {
+            Vertices.Add(e1.Current);
+        }
+    }
+
+    public ShapeData Lerp(ShapeData left, ShapeData right, float lerpAmt)
+    {
+        ShapeData tempLerp = new ShapeData(left.Vertices);
+        int max = tempLerp.Vertices.Count;
+        for(int i = 0; i < max; i++)
+        {
+            tempLerp.Vertices[i] = Vector3.Lerp(left.Vertices[i], right.Vertices[i], lerpAmt);
+        }
+        return tempLerp;
+    }
 }
