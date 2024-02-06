@@ -165,7 +165,13 @@ public class KeyframeMainWindow : MonoBehaviour
             //Not in vertex mode- close the wireframe
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_WireframeThreshold", 0f);
 
-            
+            //Set texture offset
+            List<KeyframeData<Vector2>> tempData8 = PartFile.GetInstance().KeyFrames.NoiseTextureKeyframes;
+            Vector2 offset1 = Vector2.zero;
+            Vector2 offset2 = Vector2.zero;
+            KeyframeData<Vector2>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out offset1, out offset2, out lerp, tempData8);
+            Vector2 currentOffset = Vector2.Lerp(offset1, offset2, lerp);
+            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTextureOffset("_Noise", currentOffset);
         }
     }
 

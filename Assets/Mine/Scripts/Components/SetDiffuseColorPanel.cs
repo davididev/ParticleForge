@@ -130,14 +130,10 @@ public class SetDiffuseColorPanel : MonoBehaviour
         PartFile.GetInstance().KeyFrames.AddKeyframeColor(KeyframeMainWindow.SelectedFrame, CurrentColor);
     }
 
-    // Update is called once per frame
-    void Update()
+    void RefreshUI()  //Refresh the UI when a keyframe is added or timeline is moving
     {
-        if(LastKeyframeColor != KeyframeColor)  //The color was updated by the timeline
-        {
-            CurrentColor = KeyframeColor;
-            LastKeyframeColor = KeyframeColor;
-            SetUIValues();
-        }
+        CurrentColor = KeyframeColor;
+        LastKeyframeColor = KeyframeColor;
+        SetUIValues();
     }
 }
