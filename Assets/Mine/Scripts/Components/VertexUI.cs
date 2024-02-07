@@ -43,8 +43,8 @@ public class VertexUI : MonoBehaviour
         while (e1.MoveNext())
         {
             e1.Current.SetHoveredToSelected();
-            Selected.Add(e1.Current);
         }
+
 
 
         Midpoint = Vector3.zero;
@@ -62,15 +62,20 @@ public class VertexUI : MonoBehaviour
     }
 
     /// <summary>
-    /// Should be called when selected is cleared. 
+    /// Should be called when selected is cleared (right click)
     /// </summary>
     public static void ClearSelected()
     {
         for (int i = Selected.Count - 1; i >= 0; i--)
         {
             Selected[i].SetUnHovered();
-            Selected.RemoveAt(i);
         }
+        for (int i = Hovered.Count - 1; i >= 0; i--)
+        {
+            Hovered[i].SetUnHovered();
+        }
+        Hovered.Clear();
+        Selected.Clear();
     }
 
     /// <summary>
