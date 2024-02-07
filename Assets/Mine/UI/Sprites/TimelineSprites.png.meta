@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 64
+    maxTextureSize: 128
     resizeAlgorithm: 1
     textureFormat: -1
     textureCompression: 1
@@ -191,13 +191,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Vert
+      name: VertSelected
       rect:
         serializedVersion: 2
-        x: 12
-        y: 40
-        width: 12
-        height: 12
+        x: 14
+        y: 42
+        width: 8
+        height: 8
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -262,7 +262,7 @@ TextureImporter:
         width: 12
         height: 24
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -270,6 +270,48 @@ TextureImporter:
       bones: []
       spriteID: b8990efdd0983954ab6d8bfafa7ad67e
       internalID: -1540920817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VertNotSelected
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 33
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f76d2e4d2e4912940aa6f593bb4f7467
+      internalID: 1953851106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VertHover
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 23
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae00acff3024e5e41a8415cffaf61e19
+      internalID: 1408818803
       vertices: []
       indices: 
       edges: []
@@ -290,7 +332,9 @@ TextureImporter:
       Keyframe: 24064184
       Selected Frame: -1540920817
       Timeline frame: 1811124768
-      Vert: 1033783374
+      VertHover: 1408818803
+      VertNotSelected: 1953851106
+      VertSelected: 1033783374
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
