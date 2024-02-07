@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class VertexUI : MonoBehaviour
 {
-    public static List<VertexUI> Selected;
-    public static List<VertexUI> Hovered;
+    public static List<VertexUI> Selected = new List<VertexUI>();
+    public static List<VertexUI> Hovered = new List<VertexUI>();
     public int VertexID = 0;
 
     protected int selectID = 0;  //0 = not selected, 1 = hovered, 2 = selected
@@ -21,16 +21,48 @@ public class VertexUI : MonoBehaviour
     /// <summary>
     /// Should be called before Hovered is clear
     /// </summary>
-    public void ClearHovered()
+    public static void ClearHovered()
     {
-        if(selectID == 1)  //Is hovered but not selected
-            selectID = 0;
+        for(int i = Hovered.Count-1; i >= 0; i--)
+        {
+            if (Hovered[i].selectID == 1)
+            {
+                Hovered[i].SetUnHovered();
+                Hovered.RemoveAt(i);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Should be called at the end of drag
+    /// </summary>
+    public static void SetAllHoveredAsSelected()
+    {
+        List<VertexUI>.Enumerator e1 = Hovered.GetEnumerator();
+        while (e1.MoveNext())
+        {
+            e1.Current.SetHoveredToSelected();
+            Selected.Add(e1.Current);
+        }
+
+        ClearHovered();
     }
 
     /// <summary>
     /// Should be called when selected is cleared. 
     /// </summary>
-    public void ClearSelected()
+    public static void ClearSelected()
+    {
+        for (int i = Selected.Count - 1; i >= 0; i--)
+        {
+            Selected.RemoveAt(i);
+        }
+    }
+
+    /// <summary>
+    /// Should be called when it overlaps 
+    /// </summary>
+    public void SetUnHovered()
     {
         selectID = 0;
     }
@@ -41,6 +73,7 @@ public class VertexUI : MonoBehaviour
     public void SetHovered()
     {
         selectID = 1;
+        Hovered.Add(this);
     }
 
     /// <summary>
@@ -49,6 +82,7 @@ public class VertexUI : MonoBehaviour
     public void SetHoveredToSelected()
     {
         selectID = 2;
+        Selected.Add(this);
     }
 
     // Update is called once per frame

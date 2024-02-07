@@ -13,12 +13,14 @@ public class TransformRotate : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private Vector2 startMousePosition;
     private float lastDegree = 0f;
     private float startingDegree = 0f;
+    public static Vector3 NewWorldPosition = Vector3.zero;
     public static Vector3 OffsetStep = Vector3.zero;  //This should be obtained by a panel and then set back to zero once it has been obtained
+    RectTransform parent;
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-        
+        parent = transform.parent.GetComponent<RectTransform>();
     }
 
     // Update is called once per frame
@@ -101,5 +103,11 @@ public class TransformRotate : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
             
         }
+    }
+
+    public void SetArrowsByWorldPosition()
+    {
+        //Vector3 localPos = parent.InverseTransformVector();
+        parent.position = Camera.main.WorldToScreenPoint(TransformScaleArrow.NewWorldPosition);
     }
 }

@@ -9,6 +9,7 @@ public class StartingShapeHolder : MonoBehaviour
 
     public GameObject StartingVertState;
     private GameObject[] VerticesObject;
+    public static List<VertexUI> VertexUIList = new List<VertexUI>();
 
     public GameObject CurrentShape { private set; get; }
     // Start is called before the first frame update
@@ -27,16 +28,17 @@ public class StartingShapeHolder : MonoBehaviour
         VerticesObject[0] = StartingVertState;
         VerticesObject[0].transform.parent = CurrentShape.transform;
         VerticesObject[0].transform.localPosition = StartingVertices[0];
+        VertexUIList.Add(VerticesObject[0].GetComponent<VertexUI>());
         for (int i = 1; i < VerticesObject.Length; i++)
         {
             VerticesObject[i] = GameObject.Instantiate(StartingVertState, StartingVertState.transform.parent, false) as GameObject;
             VerticesObject[i].GetComponent<VertexUI>().VertexID = i;
             VerticesObject[i].transform.localPosition = StartingVertices[i];
-
+            VertexUIList.Add(VerticesObject[i].GetComponent<VertexUI>());
         }
 
         PartFile.GetInstance().KeyFrames.AddKeyVertexUpdated(1, new ShapeData(StartingVertices));
-        ShowOrHideVertices(false);
+        //ShowOrHideVertices(false);
     }
 
     /// <summary>
@@ -50,16 +52,8 @@ public class StartingShapeHolder : MonoBehaviour
             VerticesObject[i].SetActive(visible);
             if(visible)
             {
-                List<VertexUI>.Enumerator e1 = VertexUI.Selected.GetEnumerator();
-                while (e1.MoveNext())
-                {
-                    e1.Current.ClearSelected();
-                }
-                List<VertexUI>.Enumerator e2 = VertexUI.Hovered.GetEnumerator();
-                while (e2.MoveNext())
-                {
-                    e2.Current.ClearHovered();
-                }
+                VertexUI.ClearHovered();
+                VertexUI.ClearSelected();
             }
         }
     }
