@@ -6,6 +6,7 @@ public class VertexSelector : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
     public StartingShapeHolder startingShape;
+    
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -31,6 +32,12 @@ public class VertexSelector : MonoBehaviour
         {
             spriteRenderer.enabled = false;
             VertexUI.SetAllHoveredAsSelected();
+        }
+
+        //Reset selection
+        if(Input.GetMouseButtonDown(1))
+        {
+            VertexUI.ClearSelected();
         }
 
         //On drag

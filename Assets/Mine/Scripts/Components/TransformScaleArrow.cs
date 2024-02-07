@@ -116,12 +116,6 @@ public class TransformScaleArrow : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     }
 
-    public void SetArrowsByWorldPosition()
-    {
-        //Vector3 localPos = parent.InverseTransformVector();
-        parent.position = Camera.main.WorldToScreenPoint(TransformScaleArrow.NewWorldPosition);
-    }
-
 
 
 

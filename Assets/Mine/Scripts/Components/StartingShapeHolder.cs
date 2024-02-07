@@ -38,7 +38,7 @@ public class StartingShapeHolder : MonoBehaviour
         }
 
         PartFile.GetInstance().KeyFrames.AddKeyVertexUpdated(1, new ShapeData(StartingVertices));
-        //ShowOrHideVertices(false);
+        ShowOrHideVertices(false);
     }
 
     /// <summary>

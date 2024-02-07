@@ -7,6 +7,7 @@ public class VertexUI : MonoBehaviour
     public static List<VertexUI> Selected = new List<VertexUI>();
     public static List<VertexUI> Hovered = new List<VertexUI>();
     public int VertexID = 0;
+    public static Vector3 Midpoint = Vector3.zero;
 
     protected int selectID = 0;  //0 = not selected, 1 = hovered, 2 = selected
     public Sprite[] selectedImages;
@@ -45,6 +46,18 @@ public class VertexUI : MonoBehaviour
             Selected.Add(e1.Current);
         }
 
+
+        Midpoint = Vector3.zero;
+        int Count = Selected.Count;
+        Debug.Log("Calculating midpoint: " + Count);
+        List<VertexUI>.Enumerator e2 = Selected.GetEnumerator();
+        while(e2.MoveNext())
+        {
+            Midpoint += e2.Current.transform.position;
+            Debug.Log("Point " + e2.Current.transform.position + " total: " + Midpoint);
+        }
+        Midpoint = Midpoint / Count;
+
         ClearHovered();
     }
 
@@ -55,6 +68,7 @@ public class VertexUI : MonoBehaviour
     {
         for (int i = Selected.Count - 1; i >= 0; i--)
         {
+            Selected[i].SetUnHovered();
             Selected.RemoveAt(i);
         }
     }
