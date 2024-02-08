@@ -10,7 +10,7 @@ public class TransformScaleArrow : MonoBehaviour, IBeginDragHandler, IDragHandle
     public OffsestDirection thisObjectOffset;
     public Image rend;
 
-    private bool IsDragging = false;
+    public static bool IsDragging = false;
     private Vector2 startMousePosition;
     private Vector2 startTransformPosition { get; set; }
     public static Vector3 NewWorldPosition = Vector3.zero;
@@ -67,44 +67,38 @@ public class TransformScaleArrow : MonoBehaviour, IBeginDragHandler, IDragHandle
             offset.x = 0f;
         if (thisObjectOffset == OffsestDirection.RIGHT)
             offset.y = 0f;
-        Vector2 anchoredPosition = startTransformPosition + offset;
-        if (anchoredPosition.x < 50f)
-            anchoredPosition.x = 50f;
-        if (anchoredPosition.x > 750f)
-            anchoredPosition.x = 750f;
-        if (anchoredPosition.y > 50f)
-            anchoredPosition.y = 50f;
-        if (anchoredPosition.y < -600f)
-            anchoredPosition.y = -600f;
 
-        Vector3 rel = offset - startTransformPosition;
-        if (rel.x < 0f)  //Scale down X
+        Vector3 rel = offset;
+        //Debug.Log("Rel: " + rel);
+        
+        if (rel.x < -20f)  //Scale down X
         {
-            float scaleX = Mathf.Round(rel.x / -50f / 20f) * 20f;
-            scaleX = Mathf.Clamp(scaleX, 0.05f, 1f);
-            NewScale.x = scaleX;
+            NewScale.x -= 0.1f;
+            NewScale.x = Mathf.Clamp(NewScale.x, 0.1f, 6f);
+            startMousePosition = eventData.position;
         }
-        if (rel.x > 0f)  //Scale up X
+        if (rel.x > 50f)  //Scale up X
         {
-            float scaleX = 1f + Mathf.Round(rel.x / -50f / 20f) * 20f;
-            scaleX = Mathf.Clamp(scaleX, 1f, 6f);
-            NewScale.x = scaleX;
+            NewScale.x += 0.1f;
+            NewScale.x = Mathf.Clamp(NewScale.x, 0.1f, 6f);
+            startMousePosition = eventData.position;
         }
-        if (rel.y < 0f)  //Scale down Y
+        if (rel.y < -20f)  //Scale down Y
         {
-            float scaleY = Mathf.Round(rel.y / -50f / 20f) * 20f;
-            scaleY = Mathf.Clamp(scaleY, 0.05f, 1f);
-            NewScale.y = scaleY;
+            NewScale.y -= 0.1f;
+            NewScale.y = Mathf.Clamp(NewScale.y, 0.1f, 6f);
+            startMousePosition = eventData.position;
         }
-        if (rel.y > 0f)  //Scale up Y
+        if (rel.y > 50f)  //Scale up Y
         {
-            float scaleY = 1f + Mathf.Round(rel.y / -50f / 20f) * 20f;
-            scaleY = Mathf.Clamp(scaleY, 1f, 6f);
-            NewScale.y = scaleY;
+            NewScale.y += 0.1f;
+            NewScale.y = Mathf.Clamp(NewScale.y, 0.1f, 6f);
+            startMousePosition = eventData.position;
         }
 
-        //parent.anchoredPosition = anchoredPosition;
-        Vector3 worldPos;
+        Debug.Log(Time.time + ": New Scale: " + NewScale.ToString());
+
+        //parent.anchoredPositi on = anchoredPosition;
         /*
         if(RectTransformUtility.ScreenPointToWorldPointInRectangle(parent, parent.anchoredPosition, Camera.main, out worldPos))
         {
