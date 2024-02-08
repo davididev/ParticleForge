@@ -135,10 +135,14 @@ public class KeyframeMainWindow : MonoBehaviour
             List<KeyframeData<Vector3>> tempData = PartFile.GetInstance().KeyFrames.RotationKeyframes;
             Vector3 rot1 = Vector3.zero;
             Vector3 rot2 = Vector3.zero;
+            
             KeyframeData<Vector3>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out rot1, out rot2, out lerp, tempData);
-            Vector3 currentFrame = Vector3.Lerp(rot1, rot2, lerp);        
+
+            Quaternion q1 = Quaternion.Euler(rot1);
+            Quaternion q2 = Quaternion.Euler(rot2);
+            Quaternion currentFrame = Quaternion.Lerp(q1, q2, lerp);        
             if (refToShape.CurrentShape != null)
-                refToShape.CurrentShape.transform.localEulerAngles = currentFrame;
+                refToShape.CurrentShape.transform.rotation = currentFrame;
 
             //Set position
             List<KeyframeData<Vector2>> tempData6 = PartFile.GetInstance().KeyFrames.PositionKeyframes;

@@ -11,6 +11,7 @@ public class RotationPanel : MonoBehaviour
     void OnEnable()
     {
         transformRotate.SetActive(true);
+        transformRotate.transform.position = Camera.main.WorldToScreenPoint(refToShape.CurrentShape.transform.position);
     }
 
     void OnDisable()

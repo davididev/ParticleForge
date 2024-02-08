@@ -13,6 +13,7 @@ public class ObjectMovePanel : MonoBehaviour
     void OnEnable()
     {
         transformArrows.SetActive(true);
+        transformArrows.transform.position = Camera.main.WorldToScreenPoint(refToShape.CurrentShape.transform.position);
         LastWorldPosition = new Vector3(0f, 0f, -10f);
         PositionTexts[0].text = TransformArrow.NewWorldPosition.x.ToString("0.00");
         PositionTexts[1].text = TransformArrow.NewWorldPosition.y.ToString("0.00");
