@@ -23,6 +23,9 @@ public class VertexModePanel : MonoBehaviour
     {
         vertexSelector.gameObject.SetActive(false);
         refToShape.ShowOrHideVertices(false);
+        MoveTransformTools.SetActive(false);
+        ScaleTransformTools.SetActive(false);
+        RotateTransformTools.SetActive(false);
     }
 
     public void SetMode(int m)

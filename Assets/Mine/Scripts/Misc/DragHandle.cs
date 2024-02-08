@@ -55,20 +55,20 @@ namespace Ui
             
             Vector2 offset = eventData.position - StartMousePosition;
             Vector2 anchoredPosition = StartTransformPosition + offset;
-            if (anchoredPosition.x < 50f)
-                anchoredPosition.x = 50f;
-            if (anchoredPosition.x > 750)
-                anchoredPosition.x = 750f;
-            if (anchoredPosition.y > -50f)
-                anchoredPosition.y = -50f;
-            if (anchoredPosition.y < -450f)
-                anchoredPosition.y = -450f;
+            if (anchoredPosition.x < -400f)
+                anchoredPosition.x = -400f;
+            if (anchoredPosition.x > 400f)
+                anchoredPosition.x = 400f;
+            if (anchoredPosition.y < -375f)
+                anchoredPosition.y = -375f;
+            if (anchoredPosition.y > 375f)
+                anchoredPosition.y = 375f;
             //for (int i = 0; i < 2; i++)
             //{
-                //float halfSize = 0.5f * (parentRect.size[i] - rect.size[i]);
-              //  anchoredPosition[i] = Mathf.Clamp(anchoredPosition[i], -halfSize, halfSize);
+            //float halfSize = 0.5f * (parentRect.size[i] - rect.size[i]);
+            //  anchoredPosition[i] = Mathf.Clamp(anchoredPosition[i], -halfSize, halfSize);
             //}
-            
+
             Parent.anchoredPosition = anchoredPosition;
         }
 
