@@ -11,7 +11,7 @@ public class TransformArrow : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     public Image rend;
 
     private Vector3 startingRootPosition;
-    private bool IsDragging = false;
+    public static bool IsDragging = false;
     private Vector2 startMousePosition;
     private Vector2 startTransformPosition { get; set; }
 
@@ -23,6 +23,7 @@ public class TransformArrow : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         rend.color = Color.grey;
         startTransformPosition = transform.parent.GetComponent<RectTransform>().anchoredPosition;
         parent = transform.parent.GetComponent<RectTransform>();
+
     }
 
     void OnDisable()  //Object was hidden from view, reset the offset
@@ -33,7 +34,9 @@ public class TransformArrow : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     // Update is called once per frame
     void Update()
     {
-
+        Vector3 worldPos = parent.TransformVector(parent.position);  //Get screen position of anchored position
+        NewWorldPosition = Camera.main.ScreenToWorldPoint(worldPos, Camera.MonoOrStereoscopicEye.Mono);
+        NewWorldPosition.z = 0f;
     }
 
     public void OnPointerEnter(PointerEventData pointerEventData)
@@ -54,6 +57,7 @@ public class TransformArrow : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         startMousePosition = eventData.position;
         startTransformPosition = transform.parent.GetComponent<RectTransform>().anchoredPosition;
         transform.parent.SetAsLastSibling();
+
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -80,7 +84,6 @@ public class TransformArrow : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
         
         parent.anchoredPosition = anchoredPosition;
-        Vector3 worldPos;
         /*
         if(RectTransformUtility.ScreenPointToWorldPointInRectangle(parent, parent.anchoredPosition, Camera.main, out worldPos))
         {
@@ -89,9 +92,6 @@ public class TransformArrow : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             NewWorldPosition.z = 0f;
         }
         */
-        worldPos = parent.TransformVector(parent.position);  //Get screen position of anchored position
-        NewWorldPosition = Camera.main.ScreenToWorldPoint(worldPos, Camera.MonoOrStereoscopicEye.Mono);
-        NewWorldPosition.z = 0f;
 
     }
 

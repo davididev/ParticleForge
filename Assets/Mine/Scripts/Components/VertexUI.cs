@@ -47,18 +47,24 @@ public class VertexUI : MonoBehaviour
 
 
 
+        CalculateMidpoint();
+
+        ClearHovered();
+    }
+
+    public static void CalculateMidpoint()
+    {
         Midpoint = Vector3.zero;
         int Count = Selected.Count;
         Debug.Log("Calculating midpoint: " + Count);
         List<VertexUI>.Enumerator e2 = Selected.GetEnumerator();
-        while(e2.MoveNext())
+        while (e2.MoveNext())
         {
             Midpoint += e2.Current.transform.position;
-            Debug.Log("Point " + e2.Current.transform.position + " total: " + Midpoint);
+            Debug.Log("Point #" + e2.Current.VertexID + " Pos: " + e2.Current.transform.position + " total: " + Midpoint);
         }
+        Midpoint.z = 0f;
         Midpoint = Midpoint / Count;
-
-        ClearHovered();
     }
 
     /// <summary>

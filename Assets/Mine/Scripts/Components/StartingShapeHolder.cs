@@ -42,6 +42,29 @@ public class StartingShapeHolder : MonoBehaviour
     }
 
     /// <summary>
+    /// Get the local coordinates of the vertices currently; should be called on timeline updates or VertexModePanel updates
+    /// </summary>
+    /// <returns></returns>
+    public Vector3[] GetVertices()
+    {
+        return CurrentShape.GetComponent<MeshFilter>().mesh.vertices;
+    }
+
+    /// <summary>
+    /// Set the mesh list by local positons; should be called on timeline updates or VertexModePanel updates
+    /// </summary>
+    /// <param name="list"></param>
+    public void SetVertices(Vector3[] list)
+    {
+        for(int i = 0; i < list.Length; i++)
+        {
+            VerticesObject[i].transform.localPosition = list[i];
+        }
+        VertexUI.CalculateMidpoint();
+        CurrentShape.GetComponent<MeshFilter>().mesh.vertices = list;
+    }
+
+    /// <summary>
     /// Should be called on startup and when you enable/disable vertex panel
     /// </summary>
     /// <param name="visible"></param>

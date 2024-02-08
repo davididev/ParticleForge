@@ -53,6 +53,7 @@ public class KeyframeList
         DirectionalLightIntensityKeys.Sort(comparer6);  //Float comparer
         SceneLightIntensityKeys.Sort(comparer6);  //Float comparer
 
+
         KeyframeMainWindow window = KeyframeMainWindow.GetInstance();
         if(window != null)
         {
@@ -80,6 +81,13 @@ public class KeyframeList
     public void AddKeyframePosition(int frameNum, Vector2 pos)
     {
         KeyframeData<Vector2>.AddOrUpdate(frameNum, pos, PositionKeyframes);
+        SortAll();
+    }
+
+    public void AddKeyframeShape(int frameNum, Vector3[] points)
+    {
+        KeyframeData<ShapeData>.AddOrUpdate(frameNum, new ShapeData(points), ShapeKeyframes);
+
         SortAll();
     }
 

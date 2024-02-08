@@ -95,6 +95,26 @@ public class KeyframeMainWindow : MonoBehaviour
 
         if (refToShape.CurrentShape == null)
             return;
+        float lerp = 0f;  //This will be used by all functions
+
+        //In both modes, vertex and object, show the mesh vertex positions
+        List<KeyframeData<ShapeData>> tempData0 = PartFile.GetInstance().KeyFrames.ShapeKeyframes;
+        ShapeData shape1 = new ShapeData();
+        ShapeData shape2 = new ShapeData();
+        KeyframeData<ShapeData>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out shape1, out shape2, out lerp, tempData0);
+        ShapeData currentShape = ShapeData.Lerp(shape1, shape2, lerp);
+
+        Vector3[] points = refToShape.GetVertices();
+        List<Vector3>.Enumerator e0 = currentShape.Vertices.GetEnumerator();
+        int pt = 0;
+        while(e0.MoveNext())
+        {
+            points[pt] = e0.Current;
+            pt++;
+        }
+
+        refToShape.SetVertices(points);
+
 
         if (CurrentMode == KeyframeMainWindow.OBJECT_MODE.Vertex)  //Vertex mode- do default change the euler angles
         {
@@ -104,12 +124,11 @@ public class KeyframeMainWindow : MonoBehaviour
             //Show wireframe
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_WireframeThreshold", 1f);
 
-            //Todo- make moveable points
         }
         else  //Anything other than vertex mode
         {
             //Hide wireframe
-            float lerp = 0f;  //This will be used by all functions
+            
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_WireframeThreshold", 0f);
 
             //Set rotation

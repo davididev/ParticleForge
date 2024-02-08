@@ -43,7 +43,7 @@ public class ShapeData
         }
     }
 
-    public ShapeData Lerp(ShapeData left, ShapeData right, float lerpAmt)
+    public static ShapeData Lerp(ShapeData left, ShapeData right, float lerpAmt)
     {
         ShapeData tempLerp = new ShapeData(left.Vertices);
         int max = tempLerp.Vertices.Count;
