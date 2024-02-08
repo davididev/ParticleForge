@@ -44,7 +44,7 @@ public class KeyframeMainWindow : MonoBehaviour
         Vector2 delta = BackgroundOfTimeline.sizeDelta;
         delta.x = 12f * PartFile.GetInstance().FrameCount;
         BackgroundOfTimeline.sizeDelta = delta;
-
+        
         UpdateDropdown();
     }
 
@@ -52,6 +52,7 @@ public class KeyframeMainWindow : MonoBehaviour
     {
         Texture2D Noise = PartFile.GetInstance().LoadNoise();
         refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
+        RefreshObjectState();  //File loaded, let's go
     }
 
     public void SaveFileButton()
