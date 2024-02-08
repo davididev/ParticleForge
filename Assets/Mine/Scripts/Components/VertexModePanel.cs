@@ -79,6 +79,10 @@ public class VertexModePanel : MonoBehaviour
                 SetMode(0);
                 return;
             }
+            rotateAngle = 0f;  //Tool temporary variable
+            startingScaleVertexes = refToShape.GetVertices();
+            localMidPoint = refToShape.CurrentShape.transform.InverseTransformPoint(VertexUI.Midpoint);
+
             toolHeader.text = "Rotate Vertex";
             toolDescritption.text = "(after making selection) \nRotate all selected points on the Z Axis from the midpoint of all points.";
             RotateTransformTools.SetActive(true);
@@ -131,7 +135,7 @@ public class VertexModePanel : MonoBehaviour
             Vector3[] tempMesh = refToShape.GetVertices();
             List<VertexUI>.Enumerator e1 = VertexUI.Selected.GetEnumerator();  //Each vertex UI stores a mesh vertex ID in it
             //Debug.Log(Time.time + "-New Scale: " + TransformScaleArrow.NewScale.ToString());
-            Vector3 localMidPoint = refToShape.CurrentShape.transform.InverseTransformPoint(VertexUI.Midpoint);
+            localMidPoint = refToShape.CurrentShape.transform.InverseTransformPoint(VertexUI.Midpoint);
             Vector3 scale = new Vector3(TransformScaleArrow.NewScale.x, 0f, TransformScaleArrow.NewScale.y);
             while (e1.MoveNext())  //Move each Selected vertex by rel
             {
@@ -164,9 +168,61 @@ public class VertexModePanel : MonoBehaviour
         return scaledPoint;
     }
 
+    Vector3 localMidPoint;
+    // Function to rotate a point around the Y-axis based on its current position, an origin point, and an angle
+    public Vector3 RotatePoint(Vector3 point, Vector3 origin, float angle)
+    {
+        // Calculate the vector from the origin to the point
+        Vector3 vectorToPoint = point - origin;
+
+        // Calculate the sine and cosine of the angle
+        float cosTheta = Mathf.Cos(angle * Mathf.Deg2Rad);
+        float sinTheta = Mathf.Sin(angle * Mathf.Deg2Rad);
+
+        // Rotate the vector around the Y-axis
+        float newX = vectorToPoint.x * cosTheta + vectorToPoint.z * sinTheta;
+        float newZ = -vectorToPoint.x * sinTheta + vectorToPoint.z * cosTheta;
+
+        // Create the rotated vector
+        Vector3 rotatedVector = new Vector3(newX, vectorToPoint.y, newZ);
+
+        // Add the rotated vector to the origin to get the rotated point
+        Vector3 rotatedPoint = origin + rotatedVector;
+
+        return rotatedPoint;
+    }
+
+    float rotateAngle = 0f;
     void RotationUpdate()
     {
+        if(TransformRotate.OffsetStep != Vector3.zero)
+        {
+            rotateAngle += TransformRotate.OffsetStep.z;
+            TransformRotate.OffsetStep = Vector3.zero;
 
+        }
+
+
+        
+
+        //Debug.Log("Rotate arrow is now " + rotateAngle + "; dragging: " + TransformRotate.IsDragging.ToString());
+
+        if (TransformRotate.IsDragging)
+        {
+            Vector3[] tempMesh = refToShape.GetVertices();
+            List<VertexUI>.Enumerator e1 = VertexUI.Selected.GetEnumerator();  //Each vertex UI stores a mesh vertex ID in it
+            //Debug.Log(Time.time + "-New Scale: " + TransformScaleArrow.NewScale.ToString());
+            //localMidPoint = refToShape.CurrentShape.transform.InverseTransformPoint(VertexUI.Midpoint);
+            while (e1.MoveNext())  //Move each Selected vertex by rel
+            {
+                int thisVert = e1.Current.VertexID;
+
+                Vector3 temp = RotatePoint(startingScaleVertexes[thisVert], localMidPoint, rotateAngle);
+                tempMesh[thisVert] = temp;
+
+            }
+            refToShape.SetVertices(tempMesh);
+        }
     }
 
     public void AddKeyframe()

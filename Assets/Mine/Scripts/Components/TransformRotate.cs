@@ -10,6 +10,8 @@ public class TransformRotate : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public OffsestDirection thisObjectOffset;
     public Image rend;
 
+    public static bool IsDragging = false;
+
     private Vector2 startMousePosition;
     private float lastDegree = 0f;
     private float startingDegree = 0f;
@@ -45,11 +47,12 @@ public class TransformRotate : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         startMousePosition = eventData.position;
         lastDegree = 0f;
         startingDegree = Mathf.Atan2(startMousePosition.y, startMousePosition.x) * Mathf.Rad2Deg;
+        IsDragging = true;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-
+        IsDragging = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -89,19 +92,19 @@ public class TransformRotate : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         {
             float newAngle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg;
             float dif = Mathf.DeltaAngle(startingDegree, newAngle);
-            Debug.Log("Difference of angles: " + dif);
+            //Debug.Log("Difference of angles: " + dif);
             if (dif > 15f)
             {
-                OffsetStep.z += 15;
-                startingDegree += 15;  
+                if (offset.magnitude > 40f) //Lower the sensitiviy- only rotate if the offset is far from the center
+                    OffsetStep.z += 15;
+                startingDegree += 15;
             }
             if (dif < -15f)
             {
-                OffsetStep.z -= 15;
+                if (offset.magnitude > 40f) //Lower the sensitiviy- only rotate if the offset is far from the center
+                    OffsetStep.z -= 15;
                 startingDegree -= 15;
             }
-
-            
         }
     }
 
