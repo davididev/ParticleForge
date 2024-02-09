@@ -18,6 +18,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     public TMPro.TMP_Dropdown DropdownObjectMode;
     public TMPro.TextMeshProUGUI FrameNumberText, FrameTypeText;
     public static int SelectedFrame = 1;
+    private bool isPlayingPreview = false;
+    private float playingPreviewTimer = 0f;
     public enum OBJECT_MODE { Vertex, Rotation, Position, NoiseOffset, SetColor, Fresnel, Lighting1, Lighting2, Lighting3};
     public OBJECT_MODE CurrentMode = OBJECT_MODE.Rotation;
     // Start is called before the first frame update
@@ -272,6 +274,13 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     void Update()
     {
         UpdateFrameNumber();
+        if (Input.GetKeyDown(KeyCode.Space))
+            OnPlayButtonPressed();
+    }
+
+    public void OnPlayButtonPressed()
+    {
+        isPlayingPreview = !isPlayingPreview;
     }
 
     void UpdateFrameNumber()
@@ -287,6 +296,19 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             changedPos = true;
             SelectedFrame--;
         }
+        if(isPlayingPreview)
+        {
+            playingPreviewTimer += Time.deltaTime;
+            if(playingPreviewTimer > 0.05f)
+            {
+                playingPreviewTimer -= 0.05f;
+                changedPos = true;
+                SelectedFrame++;
+                if (SelectedFrame >= PartFile.GetInstance().FrameCount)
+                    SelectedFrame = 0;
+            }
+        }
+
         SelectedFrame = Mathf.Clamp(SelectedFrame, 1, PartFile.GetInstance().FrameCount);
 
         if(changedPos == true)
