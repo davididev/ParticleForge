@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using SkywardRay.FileBrowser;
 
-public class KeyframeMainWindow : MonoBehaviour
+public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
 {
     public SkywardFileBrowser fileBrowser;
     public static bool PreviewEffect = false;
@@ -48,7 +49,32 @@ public class KeyframeMainWindow : MonoBehaviour
         UpdateDropdown();
     }
 
-    void LoadNoise()
+    public void OnPointerClick(PointerEventData pointerEventData)
+    {
+        /*
+        Vector2 v;
+        if(RectTransformUtility.ScreenPointToLocalPointInRectangle(GetComponent<RectTransform>(), pointerEventData.pressPosition, Camera.main, out v))
+        {
+            Debug.Log("Press:" + pointerEventData.pressPosition + "; Clicked at " + v);
+        }
+        */
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(pointerEventData.pressPosition.x, pointerEventData.pressPosition.y, 0f));
+        Vector3 localPos = RectTransformUtility.WorldToScreenPoint(Camera.main, worldPos);
+        Debug.Log("World pos: " + worldPos + "; Local Pos:" + localPos);
+
+        int frame = Mathf.FloorToInt(localPos.x / 12f);
+        SelectedFrame = frame;
+
+        Vector3 localPos2 = CursorPosition.localPosition;
+        localPos2.x = (SelectedFrame - 1) * 12.0f;
+        CursorPosition.localPosition = localPos2;
+
+        FrameNumberText.text = "F: " + SelectedFrame + " / " + PartFile.GetInstance().FrameCount;
+        RefreshObjectState();
+    }
+
+
+        void LoadNoise()
     {
         Texture2D Noise = PartFile.GetInstance().LoadNoise();
         refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
