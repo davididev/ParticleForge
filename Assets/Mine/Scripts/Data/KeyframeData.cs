@@ -14,6 +14,7 @@ public class KeyframeData<T>
 
     public static void AddOrUpdate(int frame, T data, List<KeyframeData<T>> ListRef)
     {
+        /*
         List<KeyframeData<T>>.Enumerator e1 = ListRef.GetEnumerator();
         while(e1.MoveNext())
         {
@@ -23,8 +24,21 @@ public class KeyframeData<T>
                 return;
             }
         }
+        */
+        bool NewKeyframe = true;
+        for(int i = 0; i < ListRef.Count; i++)
+        {
+            Debug.Log(i + ":Checking keyframe " + frame + " against " + ListRef[i].FrameNum);
+            if(ListRef[i].FrameNum == frame)
+            {
+                ListRef[i].State = data;
+                NewKeyframe = false;
+                Debug.Log("Previous keyframe found!");
+            }
+        }
         //Didn't find an entry in the list, let's create a new one.
-        ListRef.Add(new KeyframeData<T>(frame, data));
+        if(NewKeyframe)
+            ListRef.Add(new KeyframeData<T>(frame, data));
     }
 
     /// <summary>

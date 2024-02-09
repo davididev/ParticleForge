@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using SkywardRay.FileBrowser;
 
@@ -15,6 +16,7 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     public GameObject MarkerPrefab;
     private GameObject[] MarkerGameObjects;
     public GameObject[] EditingWindows;
+    public Button DeleteKeyframeButton;
     public TMPro.TMP_Dropdown DropdownObjectMode;
     public TMPro.TextMeshProUGUI FrameNumberText, FrameTypeText;
     public static int SelectedFrame = 1;
@@ -53,19 +55,15 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData pointerEventData)
     {
-        /*
-        Vector2 v;
-        if(RectTransformUtility.ScreenPointToLocalPointInRectangle(GetComponent<RectTransform>(), pointerEventData.pressPosition, Camera.main, out v))
-        {
-            Debug.Log("Press:" + pointerEventData.pressPosition + "; Clicked at " + v);
-        }
-        */
+        
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(pointerEventData.pressPosition.x, pointerEventData.pressPosition.y, 0f));
         Vector3 localPos = RectTransformUtility.WorldToScreenPoint(Camera.main, worldPos);
-        Debug.Log("World pos: " + worldPos + "; Local Pos:" + localPos);
+        
 
         int frame = Mathf.FloorToInt(localPos.x / 12f);
         SelectedFrame = frame;
+        if (SelectedFrame > PartFile.GetInstance().FrameCount)
+            SelectedFrame = PartFile.GetInstance().FrameCount;
 
         Vector3 localPos2 = CursorPosition.localPosition;
         localPos2.x = (SelectedFrame - 1) * 12.0f;
@@ -76,7 +74,7 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     }
 
 
-        void LoadNoise()
+    void LoadNoise()
     {
         Texture2D Noise = PartFile.GetInstance().LoadNoise();
         refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
@@ -276,6 +274,93 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         UpdateFrameNumber();
         if (Input.GetKeyDown(KeyCode.Space))
             OnPlayButtonPressed();
+
+        IsButtonEnabled();
+        if (Input.GetKeyDown(KeyCode.Delete) && DeleteKeyframeButton.interactable == true)
+            OnKeyframeDeletePressed();
+    }
+
+    void IsButtonEnabled()
+    {
+        int x = SelectedFrame - 1;
+        if(x == 0) //Cannot delete the first keyframe
+        {
+            DeleteKeyframeButton.interactable = false;
+            return;
+        }
+        if (MarkerGameObjects[x].activeInHierarchy == true)
+            DeleteKeyframeButton.interactable = true;
+        else
+            DeleteKeyframeButton.interactable = false;
+    }
+
+    public void OnKeyframeDeletePressed()
+    {
+        int x = SelectedFrame - 1;
+        if(CurrentMode == OBJECT_MODE.Vertex)
+        {
+            List<KeyframeData<ShapeData>> list = PartFile.GetInstance().KeyFrames.ShapeKeyframes;
+            for(int i = 0; i < list.Count; i++)
+            {
+                Debug.Log(i + ": Current Frame is " + SelectedFrame + "; at frame " + list[i].FrameNum);
+                if (list[i].FrameNum == SelectedFrame)
+                    { list.RemoveAt(i); break; }
+
+            }
+        }
+
+        if (CurrentMode == OBJECT_MODE.NoiseOffset)
+        {
+            List<KeyframeData<Vector2>> list = PartFile.GetInstance().KeyFrames.NoiseTextureKeyframes;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].FrameNum == SelectedFrame)
+                    { list.RemoveAt(i); break; }
+            }
+        }
+
+        if (CurrentMode == OBJECT_MODE.Position)
+        {
+            List<KeyframeData<Vector2>> list = PartFile.GetInstance().KeyFrames.PositionKeyframes;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].FrameNum == SelectedFrame)
+                    { list.RemoveAt(i); break; }
+            }
+        }
+
+        if (CurrentMode == OBJECT_MODE.Rotation)
+        {
+            List<KeyframeData<Vector3>> list = PartFile.GetInstance().KeyFrames.RotationKeyframes;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].FrameNum == SelectedFrame)
+                    { list.RemoveAt(i); break; }
+            }
+        }
+
+        if (CurrentMode == OBJECT_MODE.SetColor)
+        {
+            List<KeyframeData<Color>> list = PartFile.GetInstance().KeyFrames.ColorKeyframes;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].FrameNum == SelectedFrame)
+                    { list.RemoveAt(i); break; }
+            }
+        }
+
+        if (CurrentMode == OBJECT_MODE.Fresnel)
+        {
+            List<KeyframeData<float>> list = PartFile.GetInstance().KeyFrames.FresnelKeyframes;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].FrameNum == SelectedFrame)
+                    { list.RemoveAt(i); break; }
+            }
+        }
+
+        UpdateKeyframes();
+        RefreshObjectState();
     }
 
     public void OnPlayButtonPressed()
