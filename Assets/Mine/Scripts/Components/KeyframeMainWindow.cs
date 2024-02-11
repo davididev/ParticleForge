@@ -211,12 +211,17 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             KeyframeData<float>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out fres1, out fres2, out lerp, tempData4);
             LightRef.intensity = Mathf.Lerp(fres1, fres2, lerp);
 
-            //Set light settings (scene dir)
+            //Set light settings (scene)
             Color c1;
             Color c2;
             List<KeyframeData<Color>> tempData5 = PartFile.GetInstance().KeyFrames.SceneLightColorKeys;
             KeyframeData<Color>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out c1, out c2, out lerp, tempData5);
             RenderSettings.ambientLight = Color.Lerp(c1, c2, lerp);
+
+            //Set dir light settings 
+            List<KeyframeData<Color>> tempData9 = PartFile.GetInstance().KeyFrames.DirectionalLightColorKeys;
+            KeyframeData<Color>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out c1, out c2, out lerp, tempData9);
+            LightRef.color = Color.Lerp(c1, c2, lerp);
 
             //Set Diffuse Colors
             List<KeyframeData<Color>> tempData7 = PartFile.GetInstance().KeyFrames.ColorKeyframes;
@@ -261,9 +266,9 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         if (CurrentMode == OBJECT_MODE.Lighting2)
             keyframes = KeyframeData<float>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.DirectionalLightIntensityKeys);
         if (CurrentMode == OBJECT_MODE.Lighting3)
-            keyframes = KeyframeData<Color>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.SceneLightColorKeys);
+            keyframes = KeyframeData<Color>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.DirectionalLightColorKeys); 
         if (CurrentMode == OBJECT_MODE.Lighting4)
-            keyframes = KeyframeData<Color>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.DirectionalLightColorKeys);
+            keyframes = KeyframeData<Color>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.SceneLightColorKeys);
         int i = 0; //i is the number of keyframes in the current mode
         for(int x = 1; x < 65; x++)  //x is the number of total markers of all possible keyframes
         {
@@ -406,7 +411,7 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         }
         if (CurrentMode == OBJECT_MODE.Lighting3)
         {
-            List<KeyframeData<Color>> list = PartFile.GetInstance().KeyFrames.SceneLightColorKeys;
+            List<KeyframeData<Color>> list = PartFile.GetInstance().KeyFrames.DirectionalLightColorKeys;
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].FrameNum == SelectedFrame)
@@ -415,13 +420,14 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         }
         if (CurrentMode == OBJECT_MODE.Lighting4)
         {
-            List<KeyframeData<Color>> list = PartFile.GetInstance().KeyFrames.DirectionalLightColorKeys;
+            List<KeyframeData<Color>> list = PartFile.GetInstance().KeyFrames.SceneLightColorKeys;
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].FrameNum == SelectedFrame)
                 { list.RemoveAt(i); break; }
             }
         }
+        
 
         UpdateKeyframes();
         RefreshObjectState();
@@ -495,6 +501,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             DropdownLightingDetected2();
         if (id == 8)
             DropdownLightingDetected3();
+        if (id == 9)
+            DropdownLightingDetected4();
 
         for (int i = 0; i < EditingWindows.Length; i++)
         {
@@ -553,12 +561,12 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     public void DropdownLightingDetected3()
     {
         CurrentMode = OBJECT_MODE.Lighting3;
-        FrameTypeText.text = "Keyframes: Ambient Color";
+        FrameTypeText.text = "Keyframes: Dir Light Color";
     }
 
     public void DropdownLightingDetected4()
     {
         CurrentMode = OBJECT_MODE.Lighting4;
-        FrameTypeText.text = "Keyframes: Dir Light Color";
+        FrameTypeText.text = "Keyframes: Ambient Light Color";
     }
 }

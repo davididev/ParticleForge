@@ -2,52 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class SetDiffuseColorPanel : MonoBehaviour
+public class SetDirLightColorPanel : MonoBehaviour
 {
-    [System.Serializable]
-    public class IndivColor
-    {
-        public Image ColorBackground;
-        public Slider SliderRef;
-        public TMPro.TMP_InputField ColorText;
-        public enum COLOR { Red, Green, Blue};
-        public COLOR Identity = COLOR.Red;
-        public void UpdateColors(Color current)
-        {
-            //temps are gradients for this slider, basically what the color would be if slider is all the
-            //way to the left or right
-            Color ctempLeft = current;
-            Color ctempRight = current;
-            if (Identity == COLOR.Red)
-            {
-                ctempLeft.r = 0f;
-                ctempRight.r = 1f;
-            }
-            if (Identity == COLOR.Green)
-            {
-                ctempLeft.g = 0f;
-                ctempRight.g = 1f;
-            }
-            if (Identity == COLOR.Blue)
-            {
-                ctempLeft.b = 0f;
-                ctempRight.b = 1f;
-            }
-
-            ColorBackground.material.SetColor("_ColorLeft", ctempLeft);
-            ColorBackground.material.SetColor("_ColorRight", ctempRight);
-        }
-
-    }
-
     [SerializeField]
-    public IndivColor[] ColorSliders;
+    public SetDiffuseColorPanel.IndivColor[] ColorSliders;
     public Image resultColor;
     private Color CurrentColor;
     public static Color KeyframeColor = Color.white;
     private Color LastKeyframeColor;
-    public StartingShapeHolder refToShape;
+    public Light refToLight;
 
     bool Init = false;  //Don't call slider onupdate until two framesteps have passed
 
@@ -63,14 +26,14 @@ public class SetDiffuseColorPanel : MonoBehaviour
     /// </summary>
     void SetUIValues()
     {
-        CurrentColor = refToShape.CurrentShape.GetComponent<MeshRenderer>().material.GetColor("_DiffuseColor");
+        CurrentColor = refToLight.color;
         Debug.Log("Keyframe color: " + CurrentColor.ToString());
         LastKeyframeColor = CurrentColor;
         SetSliderValues();
         SetTextBoxValues();
         UpdateColorSliderGradients();
-        UpdateRefColor();
         Init = true;
+        UpdateRefColor();
     }
 
     /// <summary>
@@ -98,7 +61,7 @@ public class SetDiffuseColorPanel : MonoBehaviour
     /// </summary>
     void UpdateColorSliderGradients()
     {
-        for(int i = 0; i < ColorSliders.Length; i++)
+        for (int i = 0; i < ColorSliders.Length; i++)
         {
             ColorSliders[i].UpdateColors(CurrentColor);
         }
@@ -139,8 +102,8 @@ public class SetDiffuseColorPanel : MonoBehaviour
 
     public void AddKeyframe()
     {
-        
-        PartFile.GetInstance().KeyFrames.AddKeyframeColor(KeyframeMainWindow.SelectedFrame, CurrentColor);
+
+        PartFile.GetInstance().KeyFrames.AddKeyframeLightColor(KeyframeMainWindow.SelectedFrame, CurrentColor);
     }
 
     void RefreshUI()  //Refresh the UI when a keyframe is added or timeline is moving
@@ -151,6 +114,6 @@ public class SetDiffuseColorPanel : MonoBehaviour
 
     void UpdateRefColor()
     {
-        refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetColor("_DiffuseColor", CurrentColor);
+        refToLight.color = CurrentColor;
     }
 }
