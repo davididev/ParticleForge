@@ -56,26 +56,13 @@ public class RotationPanel : MonoBehaviour
     }
     */
 
-    public void PreviewEuler()
+    public void OnUpdateTextBoxes()
     {
-        if (KeyframeMainWindow.PreviewEffect == true)
-            return;
-        StartCoroutine(PreviewEulerRoutine());
-    }
-
-    IEnumerator PreviewEulerRoutine()
-    {
-        KeyframeMainWindow.PreviewEffect = true;
-        Vector3 prevAngles = refToShape.CurrentShape.transform.localEulerAngles;
         Vector3 v = Vector3.zero;
         v.x = float.Parse(RotationEulerText[0].text);
         v.y = float.Parse(RotationEulerText[1].text);
         v.z = float.Parse(RotationEulerText[2].text);
         refToShape.CurrentShape.transform.localEulerAngles = v;
-        yield return new WaitForSeconds(0.5f);
-
-        refToShape.CurrentShape.transform.localEulerAngles = prevAngles;
-        KeyframeMainWindow.PreviewEffect = false;
     }
 
     public void AddKeyframe()
