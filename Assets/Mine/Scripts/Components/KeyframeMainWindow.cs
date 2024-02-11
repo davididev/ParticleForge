@@ -245,6 +245,10 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             keyframes = KeyframeData<float>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.FresnelKeyframes);
         if (CurrentMode == OBJECT_MODE.Lighting1)
             keyframes = KeyframeData<Vector3>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.DirectionalLightRotationKeyframes);
+        if (CurrentMode == OBJECT_MODE.Lighting2)
+            keyframes = KeyframeData<float>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.DirectionalLightIntensityKeys);
+        if (CurrentMode == OBJECT_MODE.Lighting3)
+            keyframes = KeyframeData<float>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.SceneLightIntensityKeys);
         int i = 0; //i is the number of keyframes in the current mode
         for(int x = 1; x < 65; x++)  //x is the number of total markers of all possible keyframes
         {
@@ -364,6 +368,24 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         if (CurrentMode == OBJECT_MODE.Lighting1)
         {
             List<KeyframeData<Vector3>> list = PartFile.GetInstance().KeyFrames.DirectionalLightRotationKeyframes;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].FrameNum == SelectedFrame)
+                { list.RemoveAt(i); break; }
+            }
+        }
+        if (CurrentMode == OBJECT_MODE.Lighting2)
+        {
+            List<KeyframeData<float>> list = PartFile.GetInstance().KeyFrames.DirectionalLightIntensityKeys;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].FrameNum == SelectedFrame)
+                { list.RemoveAt(i); break; }
+            }
+        }
+        if (CurrentMode == OBJECT_MODE.Lighting3)
+        {
+            List<KeyframeData<float>> list = PartFile.GetInstance().KeyFrames.SceneLightIntensityKeys;
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].FrameNum == SelectedFrame)
