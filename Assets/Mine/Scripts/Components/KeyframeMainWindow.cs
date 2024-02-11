@@ -18,8 +18,9 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     public GameObject[] EditingWindows;
     public Button DeleteKeyframeButton;
     public TMPro.TMP_Dropdown DropdownObjectMode;
-    public TMPro.TextMeshProUGUI FrameNumberText, FrameTypeText;
+    public TMPro.TextMeshProUGUI FrameNumberText, FrameTypeText, SaveFileText;
     public static int SelectedFrame = 1;
+    float saveFileTimer = 0.0f;
     private bool isPlayingPreview = false;
     private float playingPreviewTimer = 0f;
     public enum OBJECT_MODE { Vertex, Rotation, Position, NoiseOffset, SetColor, Fresnel, Lighting1, Lighting2, Lighting3, Lighting4};
@@ -83,7 +84,18 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
 
     public void SaveFileButton()
     {
-        PartFile.GetInstance().SaveFile(PlayerPrefs.GetString("LastFile"));
+        try
+        {
+            PartFile.GetInstance().SaveFile(PlayerPrefs.GetString("LastFile"));
+            saveFileTimer = 2.5f;
+            SaveFileText.text = "<color=yellow>File saved.";
+        }
+        catch(System.Exception e)
+        {
+            saveFileTimer = 2.5f;
+            SaveFileText.text = "<color=red>Failed to save.  Try again.";
+        }
+        
     }
 
     public static KeyframeMainWindow GetInstance()
@@ -280,6 +292,12 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     // Update is called once per frame
     void Update()
     {
+        if(saveFileTimer > 0f)
+        {
+            saveFileTimer -= Time.deltaTime;
+            if (saveFileTimer <= 0f)
+                SaveFileText.text = "";
+        }
         UpdateFrameNumber();
         if (Input.GetKeyDown(KeyCode.Space))
             OnPlayButtonPressed();
