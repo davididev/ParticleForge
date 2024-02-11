@@ -49,6 +49,8 @@ public class KeyframeList
         var comparer6 = new FrameNumComparer<float>();
         FresnelKeyframes.Sort(comparer6);
 
+
+
         DirectionalLightRotationKeyframes.Sort(comparer1);  //Vector3 comparer
         DirectionalLightIntensityKeys.Sort(comparer6);  //Float comparer
         SceneLightIntensityKeys.Sort(comparer6);  //Float comparer
@@ -124,6 +126,12 @@ public class KeyframeList
         SortAll();
     }
 
+    public void AddKeyframeLightRotation(int frameNum, Vector3 rot)
+    {
+        KeyframeData<Vector3>.AddOrUpdate(frameNum, rot, DirectionalLightRotationKeyframes);
+        SortAll();
+    }
+
 
     /// <summary>
     /// Called whenever fresnel is updated.  Should be called AFTER the mouse exits
@@ -167,7 +175,7 @@ public class KeyframeList
         KeyframeData<Vector3> firstLightRot = new KeyframeData<Vector3>(1, new Vector3(0f, 180f, 0f));
         DirectionalLightRotationKeyframes.Add(firstLightRot);
 
-        KeyframeData<float> firstLightIntensity = new KeyframeData<float>(1, 0f);
+        KeyframeData<float> firstLightIntensity = new KeyframeData<float>(1, 1f);
         DirectionalLightIntensityKeys.Add(firstLightIntensity);
 
         KeyframeData<float> firstLightIntensity2 = new KeyframeData<float>(1, 1f);
