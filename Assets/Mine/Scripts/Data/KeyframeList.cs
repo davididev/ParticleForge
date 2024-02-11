@@ -24,7 +24,12 @@ public class KeyframeList
     [SerializeField]
     public List<KeyframeData<float>> DirectionalLightIntensityKeys = new List<KeyframeData<float>>();
     [SerializeField]
-    public List<KeyframeData<float>> SceneLightIntensityKeys = new List<KeyframeData<float>>();
+    public List<KeyframeData<Color>> SceneLightColorKeys = new List<KeyframeData<Color>>();
+
+    [SerializeField]
+    public List<KeyframeData<Color>> DirectionalLightColorKeys = new List<KeyframeData<Color>>();
+
+    
 
     /// <summary>
     /// Called every time we add, delete, or move a keyframe
@@ -53,7 +58,8 @@ public class KeyframeList
 
         DirectionalLightRotationKeyframes.Sort(comparer1);  //Vector3 comparer
         DirectionalLightIntensityKeys.Sort(comparer6);  //Float comparer
-        SceneLightIntensityKeys.Sort(comparer6);  //Float comparer
+        SceneLightColorKeys.Sort(comparer4);  //Color comparor
+        DirectionalLightColorKeys.Sort(comparer4);  // Color comparor
 
 
         KeyframeMainWindow window = KeyframeMainWindow.GetInstance();
@@ -178,8 +184,11 @@ public class KeyframeList
         KeyframeData<float> firstLightIntensity = new KeyframeData<float>(1, 1f);
         DirectionalLightIntensityKeys.Add(firstLightIntensity);
 
-        KeyframeData<float> firstLightIntensity2 = new KeyframeData<float>(1, 1f);
-        SceneLightIntensityKeys.Add(firstLightIntensity2);
+        KeyframeData<Color> firstAmbientColor = new KeyframeData<Color>(1, new Color(111f / 255f, 111f /255f, 111f / 255f, 1f));
+        SceneLightColorKeys.Add(firstAmbientColor);
+
+        KeyframeData<Color> firstLightColor = new KeyframeData<Color>(1, new Color(1f, 1f, 1f, 1f));
+        DirectionalLightColorKeys.Add(firstLightColor);
     }   
 
 

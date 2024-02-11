@@ -22,7 +22,7 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     public static int SelectedFrame = 1;
     private bool isPlayingPreview = false;
     private float playingPreviewTimer = 0f;
-    public enum OBJECT_MODE { Vertex, Rotation, Position, NoiseOffset, SetColor, Fresnel, Lighting1, Lighting2, Lighting3};
+    public enum OBJECT_MODE { Vertex, Rotation, Position, NoiseOffset, SetColor, Fresnel, Lighting1, Lighting2, Lighting3, Lighting4};
     public OBJECT_MODE CurrentMode = OBJECT_MODE.Rotation;
     // Start is called before the first frame update
     void Start()
@@ -200,14 +200,15 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             LightRef.intensity = Mathf.Lerp(fres1, fres2, lerp);
 
             //Set light settings (scene dir)
-            List<KeyframeData<float>> tempData5 = PartFile.GetInstance().KeyFrames.SceneLightIntensityKeys;
-            KeyframeData<float>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out fres1, out fres2, out lerp, tempData5);
-            RenderSettings.ambientLight = Color.white * Mathf.Lerp(fres1, fres2, lerp);
+            Color c1;
+            Color c2;
+            List<KeyframeData<Color>> tempData5 = PartFile.GetInstance().KeyFrames.SceneLightColorKeys;
+            KeyframeData<Color>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out c1, out c2, out lerp, tempData5);
+            RenderSettings.ambientLight = Color.Lerp(c1, c2, lerp);
 
             //Set Diffuse Colors
             List<KeyframeData<Color>> tempData7 = PartFile.GetInstance().KeyFrames.ColorKeyframes;
-            Color c1;
-            Color c2;
+            
             KeyframeData<Color>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out c1, out c2, out lerp, tempData7);
             //RenderSettings.ambientLight = Mathf.Lerp(fres1, fres2, lerp);
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetColor("_DiffuseColor", Color.Lerp(c1, c2, lerp));
@@ -248,7 +249,9 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         if (CurrentMode == OBJECT_MODE.Lighting2)
             keyframes = KeyframeData<float>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.DirectionalLightIntensityKeys);
         if (CurrentMode == OBJECT_MODE.Lighting3)
-            keyframes = KeyframeData<float>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.SceneLightIntensityKeys);
+            keyframes = KeyframeData<Color>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.SceneLightColorKeys);
+        if (CurrentMode == OBJECT_MODE.Lighting4)
+            keyframes = KeyframeData<Color>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.DirectionalLightColorKeys);
         int i = 0; //i is the number of keyframes in the current mode
         for(int x = 1; x < 65; x++)  //x is the number of total markers of all possible keyframes
         {
@@ -385,7 +388,16 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         }
         if (CurrentMode == OBJECT_MODE.Lighting3)
         {
-            List<KeyframeData<float>> list = PartFile.GetInstance().KeyFrames.SceneLightIntensityKeys;
+            List<KeyframeData<Color>> list = PartFile.GetInstance().KeyFrames.SceneLightColorKeys;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].FrameNum == SelectedFrame)
+                { list.RemoveAt(i); break; }
+            }
+        }
+        if (CurrentMode == OBJECT_MODE.Lighting4)
+        {
+            List<KeyframeData<Color>> list = PartFile.GetInstance().KeyFrames.DirectionalLightColorKeys;
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].FrameNum == SelectedFrame)
@@ -513,16 +525,22 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     public void DropdownLightingDetected1()
     {
         CurrentMode = OBJECT_MODE.Lighting1;
-        FrameTypeText.text = "Keyframes: Lighting Direction";
+        FrameTypeText.text = "Keyframes: Dir Lighting Direction";
     }
     public void DropdownLightingDetected2()
     {
         CurrentMode = OBJECT_MODE.Lighting2;
-        FrameTypeText.text = "Keyframes: Lighting Intensity";
+        FrameTypeText.text = "Keyframes: Dir Lighting Intensity";
     }
     public void DropdownLightingDetected3()
     {
         CurrentMode = OBJECT_MODE.Lighting3;
-        FrameTypeText.text = "Keyframes: Ambient Intensity";
+        FrameTypeText.text = "Keyframes: Ambient Color";
+    }
+
+    public void DropdownLightingDetected4()
+    {
+        CurrentMode = OBJECT_MODE.Lighting4;
+        FrameTypeText.text = "Keyframes: Dir Light Color";
     }
 }

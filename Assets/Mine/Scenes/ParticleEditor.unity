@@ -8701,7 +8701,9 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Dir Lighting Intensity
       m_Image: {fileID: 0}
-    - m_Text: Global Ambient Intensity
+    - m_Text: Global Ambient Color
+      m_Image: {fileID: 0}
+    - m_Text: Dir Lighting Color
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
