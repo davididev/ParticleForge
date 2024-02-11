@@ -79,6 +79,7 @@ public class KeyframeData<T>
         data2 = ListRef[0].State;
         if (ListRef.Count == 1)  //Default, only one keyframe
         {
+            lerp = 1f;
             return;
         }
 

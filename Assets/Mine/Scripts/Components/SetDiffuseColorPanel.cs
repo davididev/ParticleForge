@@ -47,13 +47,15 @@ public class SetDiffuseColorPanel : MonoBehaviour
     private Color CurrentColor;
     public static Color KeyframeColor = Color.white;
     private Color LastKeyframeColor;
+    public StartingShapeHolder refToShape;
+
+    bool Init = false;  //Don't call slider onupdate until two framesteps have passed
 
     // Start is called before the first frame update
     void OnEnable()
     {
         //CurrentColor = Color.white;
-        CurrentColor = KeyframeColor;
-        SetUIValues();
+        //Invoke("SetUIValues", Time.deltaTime * 2f);  //Give it a couple of framesteps to update so blue works properly.
     }
 
     /// <summary>
@@ -61,9 +63,13 @@ public class SetDiffuseColorPanel : MonoBehaviour
     /// </summary>
     void SetUIValues()
     {
+        CurrentColor = refToShape.CurrentShape.GetComponent<MeshRenderer>().material.GetColor("_DiffuseColor");
+        Debug.Log("Keyframe color: " + CurrentColor.ToString());
+        LastKeyframeColor = CurrentColor;
         SetSliderValues();
         SetTextBoxValues();
         UpdateColorSliderGradients();
+        Init = true;
     }
 
     /// <summary>
@@ -105,6 +111,8 @@ public class SetDiffuseColorPanel : MonoBehaviour
     /// </summary>
     public void OnUpdateSlider()
     {
+        if (Init == false)
+            return;
         CurrentColor.r = ColorSliders[0].SliderRef.value;
         CurrentColor.g = ColorSliders[1].SliderRef.value;
         CurrentColor.b = ColorSliders[2].SliderRef.value;
@@ -117,6 +125,8 @@ public class SetDiffuseColorPanel : MonoBehaviour
     /// </summary>
     public void OnUpdateColorTextBox()
     {
+        if (Init == false)
+            return;
         CurrentColor.r = int.Parse(ColorSliders[0].ColorText.text) / 255f;
         CurrentColor.g = int.Parse(ColorSliders[1].ColorText.text) / 255f;
         CurrentColor.b = int.Parse(ColorSliders[2].ColorText.text) / 255f;
@@ -132,8 +142,7 @@ public class SetDiffuseColorPanel : MonoBehaviour
 
     void RefreshUI()  //Refresh the UI when a keyframe is added or timeline is moving
     {
-        CurrentColor = KeyframeColor;
-        LastKeyframeColor = KeyframeColor;
-        SetUIValues();
+        Init = false;
+        Invoke("SetUIValues", Time.deltaTime * 2f);  //Give it a couple of framesteps to update so blue works properly.
     }
 }

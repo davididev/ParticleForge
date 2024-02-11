@@ -138,6 +138,24 @@ public class KeyframeList
         SortAll();
     }
 
+    public void AddKeyframeLightIntensity(int frameNum, float value)
+    {
+        KeyframeData<float>.AddOrUpdate(frameNum, value, DirectionalLightIntensityKeys);
+        SortAll();
+    }
+
+    public void AddKeyframeLightColor(int frameNum, Color value)
+    {
+        KeyframeData<Color>.AddOrUpdate(frameNum, value, DirectionalLightColorKeys);
+        SortAll();
+    }
+
+    public void AddKeyframeAmbientLightColor(int frameNum, Color value)
+    {
+        KeyframeData<Color>.AddOrUpdate(frameNum, value, SceneLightColorKeys);
+        SortAll();
+    }
+
 
     /// <summary>
     /// Called whenever fresnel is updated.  Should be called AFTER the mouse exits
