@@ -17,9 +17,16 @@ public class NewFileWindow : MonoBehaviour
     void OnEnable()
     {
         DropDown.value = 0;
-        FrameSizeText.text = "128.0";
+        FrameSizeText.text = "128";
         FrameCountSlider.value = 2;
         UpdateSlider();  //Draw the label
+    }
+
+    public void OnUpdateFrameSizeText()
+    {
+        int size = int.Parse(FrameSizeText.text);
+        size = Mathf.Clamp(size, 32, 512);
+        FrameSizeText.text = size.ToString("0.0");
     }
 
     public void CreateNewFile()
@@ -40,7 +47,7 @@ public class NewFileWindow : MonoBehaviour
     {
         int frameCount = (int)FrameCountSlider.value;
         frameCount = frameCount * frameCount;
-        PartFile.GetInstance().NewFile(output[0], float.Parse(FrameSizeText.text), frameCount, DropDown.value);
+        PartFile.GetInstance().NewFile(output[0], int.Parse(FrameSizeText.text), frameCount, DropDown.value);
 
         SceneManager.LoadScene("ParticleEditor");
     }

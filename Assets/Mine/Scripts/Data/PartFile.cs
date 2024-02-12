@@ -8,7 +8,7 @@ public class PartFile
 {
     public string FileDirectory { get; private set; }
     public string NoiseDirectory = "";
-    public float FrameSize = 32f;
+    public int FrameSize = 32;
     public int FrameCount = 16;
     public int ShapeID = 0;
     public KeyframeList KeyFrames;
@@ -21,7 +21,7 @@ public class PartFile
         KeyFrames.NewFile();
     }
 
-    public void NewFile(string FileName, float frameSize, int frameCount, int shapeID)
+    public void NewFile(string FileName, int frameSize, int frameCount, int shapeID)
     {
         Instance = new PartFile();
         Instance.FrameSize = frameSize;
