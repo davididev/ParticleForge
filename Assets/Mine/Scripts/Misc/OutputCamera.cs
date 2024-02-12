@@ -38,6 +38,32 @@ public class OutputCamera : MonoBehaviour
         return convertedTexture;
     }
 
+    public Texture2D TextureToAlpha(Texture2D source)
+    {
+        for(int x = 0; x < source.width; x++)
+        {
+            for(int y = 0; y < source.height; y++)
+            {
+                Color c = source.GetPixel(x, y);
+                c = ConvertColorToAlpha(c);
+                source.SetPixel(x, y, c);
+            }
+        }
+        source.Apply();
+        return source;
+    }
+
+    Color ConvertColorToAlpha(Color inputColor)
+    {
+        // Calculate alpha based on the luminance of the input color
+        float alpha = inputColor.grayscale;
+
+        // Create a new color with the same RGB components as input, and alpha based on the luminance
+        Color outputColor = new Color(inputColor.r, inputColor.g, inputColor.b, alpha);
+
+        return outputColor;
+    }
+
     // Update is called once per frame
     void Update()
     {
