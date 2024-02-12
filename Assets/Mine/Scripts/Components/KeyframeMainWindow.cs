@@ -269,6 +269,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             keyframes = KeyframeData<ShapeData>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.ShapeKeyframes);
         if (CurrentMode == OBJECT_MODE.Fresnel)
             keyframes = KeyframeData<float>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.FresnelKeyframes);
+        if (CurrentMode == OBJECT_MODE.Fresnel2)
+            keyframes = KeyframeData<float>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.Fresnel2Keyframes);
         if (CurrentMode == OBJECT_MODE.Lighting1)
             keyframes = KeyframeData<Vector3>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.DirectionalLightRotationKeyframes);
         if (CurrentMode == OBJECT_MODE.Lighting2)
@@ -398,6 +400,15 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
                     { list.RemoveAt(i); break; }
             }
         }
+        if (CurrentMode == OBJECT_MODE.Fresnel2)
+        {
+            List<KeyframeData<float>> list = PartFile.GetInstance().KeyFrames.Fresnel2Keyframes;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].FrameNum == SelectedFrame)
+                { list.RemoveAt(i); break; }
+            }
+        }
 
         if (CurrentMode == OBJECT_MODE.Lighting1)
         {
@@ -511,6 +522,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             DropdownLightingDetected3();
         if (id == 9)
             DropdownLightingDetected4();
+        if (id == 10)
+            DropdownFresnel2Selected();
 
         for (int i = 0; i < EditingWindows.Length; i++)
         {
@@ -548,6 +561,11 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     {
         CurrentMode = OBJECT_MODE.Fresnel;
         FrameTypeText.text = "Keyframes: Fresnel";
+    }
+    public void DropdownFresnel2Selected()
+    {
+        CurrentMode = OBJECT_MODE.Fresnel2;
+        FrameTypeText.text = "Keyframes: Inner Fresnel";
     }
 
     public void DropdownVertexSelected()
