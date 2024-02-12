@@ -5,13 +5,14 @@ using UnityEngine;
 public class OutputCamera : MonoBehaviour
 {
     private Camera cam;
-    public static RenderTexture currentTexture;
+    public RenderTexture currentTexture;
     // Start is called before the first frame update
     void Start()
     {
         cam = GetComponent<Camera>();
         RedefineRenderTexture(256);
     }
+
 
     public void RedefineRenderTexture(int squareSize)
     {

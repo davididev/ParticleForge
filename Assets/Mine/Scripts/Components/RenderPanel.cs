@@ -2,24 +2,120 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using SkywardRay.FileBrowser;
 
 public class RenderPanel : MonoBehaviour
 {
-    public GameObject mainCanvas;
+    public GameObject toolsRoot;
+    public KeyframeMainWindow mainWindow;
     public OutputCamera outputCamera;
     public RawImage previewImage;
+    public SkywardFileBrowser fileBrowser;
+
+    public GameObject settingsRoot, renderingRoot;
 
     public TMPro.TMP_InputField cameraSizeText, frameSizeText;
-    public TMPro.TextMeshProUGUI outputSizeLabel;
+    public Toggle ToggleButton;
+    public TMPro.TextMeshProUGUI outputSizeLabel, renderingLabel;
+
+    private int spritesheetSize = 0;  //Size of the whole spritesheet
+
 
     // Start is called before the first frame update
     void OnEnable()
     {
+        settingsRoot.SetActive(true);
+        renderingRoot.SetActive(false);
+        mainWindow.CurrentMode = KeyframeMainWindow.OBJECT_MODE.Render;
         frameSizeText.text = PartFile.GetInstance().FrameSize.ToString();
-        cameraSizeText.text = "5.00";
+        cameraSizeText.text = "1.50";
         OnUpdateFrameSizeText();
         OnUpdateCameraSizeText();
-        mainCanvas.SetActive(false);
+        toolsRoot.SetActive(false);
+    }
+
+    public void OnClickRenderSpritesheet()
+    {
+        string dir = DirectoryHelper.GetDirectoryOfFile(PlayerPrefs.GetString("LastFile"));
+        fileBrowser.SaveFile(dir, OnFileCreated, new string[] { ".png"});
+    }
+
+    void OnFileCreated(string[] output)
+    {
+        string fileExtension = output[0].Substring(output[0].Length - 4, 4);
+        if (fileExtension != ".png")
+            output[0] += ".png";
+        StartCoroutine(RenderingRoutine(output[0]));
+    }
+
+    IEnumerator RenderingRoutine(string path)
+    {
+        renderingRoot.SetActive(true);
+        settingsRoot.SetActive(false);
+        int maxFrame = PartFile.GetInstance().FrameCount;
+
+        Texture2D[] frames = new Texture2D[maxFrame];
+        int frameSize = PartFile.GetInstance().FrameSize;
+
+        //Create indiv frames as textures
+        for (int i = 1; i <= maxFrame; i++)
+        {
+            KeyframeMainWindow.SelectedFrame = i;
+            mainWindow.RefreshObjectState();
+            yield return new WaitForSeconds(0.05f);
+            renderingLabel.text = "Rendering frame " + i + " of " + maxFrame;
+            int z = i - 1;  //Array index
+            
+            frames[z] = new Texture2D(frameSize, frameSize);
+
+            Texture2D CurFrame = outputCamera.ConvertedTex();
+            for(int x = 0; x < frameSize; x++)
+            {
+                for(int y = 0; y < frameSize; y++)
+                {
+                    Color c = CurFrame.GetPixel(x, y);
+                    frames[z].SetPixel(x, y, c);
+                }
+            }
+
+            frames[z].Apply();
+            
+        }
+
+        //Combine the frames into a final image
+        renderingLabel.text = "Rendering final image";
+        Texture2D finalTex = new Texture2D(spritesheetSize, spritesheetSize);
+        int sqrt = Mathf.RoundToInt(Mathf.Sqrt((float)maxFrame));
+        int id = 0;
+        for (int y1 = sqrt-1; y1 >= 0; y1--) 
+        {
+            for (int x1 = 0; x1 < sqrt; x1++)
+            {
+                for (int x = 0; x < frameSize; x++)
+                {
+                    for (int y = 0; y < frameSize; y++)
+                    {
+                        int xCoord = (x1 * frameSize) + x;  //Coords of final texture
+                        int yCoord = (y1 * frameSize) + y;  //Coords of final texture
+                        Color c = frames[id].GetPixel(x, y);  //Color of current frame
+                        finalTex.SetPixel(xCoord, yCoord, c);
+                        
+                    }
+                }
+                id++;
+            }    
+        }
+
+        if (ToggleButton.isOn)  //Convert black to alpha
+            finalTex = outputCamera.TextureToAlpha(finalTex);
+
+        finalTex.Apply();
+        System.IO.File.WriteAllBytes(path, finalTex.EncodeToPNG());
+
+        renderingLabel.text = "Done!";
+        yield return new WaitForSeconds(0.5f);
+        renderingRoot.SetActive(false);
+        settingsRoot.SetActive(true);
     }
 
     public void OnUpdateCameraSizeText()
@@ -37,14 +133,17 @@ public class RenderPanel : MonoBehaviour
         PartFile.GetInstance().FrameSize = size;
 
         int squareFrames = Mathf.RoundToInt(Mathf.Sqrt((float)PartFile.GetInstance().FrameCount));
-        int sizeX = squareFrames * size;
+        spritesheetSize = squareFrames * size;
 
-        outputSizeLabel.text = "Output Size: " + sizeX + "x" + sizeX;
+        outputSizeLabel.text = "Output Size: " + spritesheetSize + "x" + spritesheetSize;
+
+        outputCamera.RedefineRenderTexture(size);
+        previewImage.texture = outputCamera.currentTexture;
     }
 
     private void OnDisable()
     {
-        mainCanvas.SetActive(true);
+        toolsRoot.SetActive(true);
     }
 
     // Update is called once per frame
