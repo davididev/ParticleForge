@@ -20,6 +20,9 @@ public class KeyframeList
     public List<KeyframeData<float>> FresnelKeyframes = new List<KeyframeData<float>>();
 
     [SerializeField]
+    public List<KeyframeData<float>> Fresnel2Keyframes = new List<KeyframeData<float>>();
+
+    [SerializeField]
     public List<KeyframeData<Vector3>> DirectionalLightRotationKeyframes = new List<KeyframeData<Vector3>>();
     [SerializeField]
     public List<KeyframeData<float>> DirectionalLightIntensityKeys = new List<KeyframeData<float>>();
@@ -53,6 +56,8 @@ public class KeyframeList
 
         var comparer6 = new FrameNumComparer<float>();
         FresnelKeyframes.Sort(comparer6);
+
+        Fresnel2Keyframes.Sort(comparer6);
 
 
 
@@ -168,6 +173,17 @@ public class KeyframeList
         SortAll();
     }
 
+    /// <summary>
+    /// Called whenever inner fresnel is updated.
+    /// </summary>
+    /// <param name="frameNum"></param>
+    /// <param name="threshold"></param>
+    public void AddKeyFresnel2(int frameNum, float threshold)
+    {
+        KeyframeData<float>.AddOrUpdate(frameNum, threshold, Fresnel2Keyframes);
+        SortAll();
+    }
+
 
 
     /// <summary>
@@ -189,6 +205,9 @@ public class KeyframeList
 
         KeyframeData<float> firstFresnold = new KeyframeData<float>(1, 1f);
         FresnelKeyframes.Add(firstFresnold);
+
+        KeyframeData<float> firstFresnold2 = new KeyframeData<float>(1, 1f);
+        Fresnel2Keyframes.Add(firstFresnold2);
 
         ShapeData.MAX_VERTICES = vertices;
 

@@ -23,7 +23,7 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     float saveFileTimer = 0.0f;
     private bool isPlayingPreview = false;
     private float playingPreviewTimer = 0f;
-    public enum OBJECT_MODE { Vertex, Rotation, Position, NoiseOffset, SetColor, Fresnel, Lighting1, Lighting2, Lighting3, Lighting4};
+    public enum OBJECT_MODE { Vertex, Rotation, Position, NoiseOffset, SetColor, Fresnel, Fresnel2, Lighting1, Lighting2, Lighting3, Lighting4, Render};
     public OBJECT_MODE CurrentMode = OBJECT_MODE.Rotation;
     // Start is called before the first frame update
     void Start()
@@ -199,6 +199,14 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             KeyframeData<float>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out fres1, out fres2, out lerp, tempData2);
             float currentFres = Mathf.Lerp(fres1, fres2, lerp);
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_FresnelThreshold", currentFres);
+
+            //Set inner fresnel threshold
+            List<KeyframeData<float>> tempData10 = PartFile.GetInstance().KeyFrames.Fresnel2Keyframes;
+            fres1 = 0f;
+            fres2 = 0f;
+            KeyframeData<float>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out fres1, out fres2, out lerp, tempData10);
+            currentFres = Mathf.Lerp(fres1, fres2, lerp);
+            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_InnerFresnelThreshold", currentFres);
 
             //Set light settings (rotation)
             List<KeyframeData<Vector3>> tempData3 = PartFile.GetInstance().KeyFrames.DirectionalLightRotationKeyframes;
