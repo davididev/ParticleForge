@@ -38,6 +38,11 @@ public class OutputCamera : MonoBehaviour
         return convertedTexture;
     }
 
+    /// <summary>
+    /// Should be called on the final spritesheet if black is set to alpha.
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
     public Texture2D TextureToAlpha(Texture2D source)
     {
         for(int x = 0; x < source.width; x++)
