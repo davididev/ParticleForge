@@ -211,8 +211,8 @@ public class KeyframeList
 
         ShapeData.MAX_VERTICES = vertices;
 
-        KeyframeData<ShapeData> firstShape = new KeyframeData<ShapeData>(1, new ShapeData());
-        ShapeKeyframes.Add(firstShape);
+        //KeyframeData<ShapeData> firstShape = new KeyframeData<ShapeData>(1, new ShapeData());
+        //ShapeKeyframes.Add(firstShape);
 
 
         KeyframeData<Vector3> firstLightRot = new KeyframeData<Vector3>(1, new Vector3(0f, 180f, 0f));

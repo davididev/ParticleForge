@@ -37,7 +37,8 @@ public class StartingShapeHolder : MonoBehaviour
             VertexUIList.Add(VerticesObject[i].GetComponent<VertexUI>());
         }
 
-        PartFile.GetInstance().KeyFrames.AddKeyVertexUpdated(1, new ShapeData(StartingVertices));
+        if(PartFile.GetInstance().KeyFrames.ShapeKeyframes.Count == 0)
+            PartFile.GetInstance().KeyFrames.AddKeyVertexUpdated(1, new ShapeData(StartingVertices));
         ShowOrHideVertices(false);
     }
 

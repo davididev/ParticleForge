@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class ShapeData
 {
-    public static int MAX_VERTICES = 150;
+    public static int MAX_VERTICES = 400;
     [SerializeField]
     public List<Vector3> Vertices = new List<Vector3>();  //These are offsets, not world positions
 
