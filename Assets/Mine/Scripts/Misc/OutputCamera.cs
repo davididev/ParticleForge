@@ -59,15 +59,44 @@ public class OutputCamera : MonoBehaviour
         return source;
     }
 
-    Color ConvertColorToAlpha(Color inputColor)
+    Color ConvertColorToAlpha(Color src)
     {
-        // Calculate alpha based on the luminance of the input color
-        float alpha = inputColor.grayscale;
+        // Calculate alpha using GIMP source code
+        //https://github.com/piksels-and-lines-orchestra/gimp/blob/master/plug-ins/common/color-to-alpha.c
+        Color alpha;
+        Color color = Color.black;  //Alpha channel
+        alpha.a = src.a;
+        alpha.r = src.r;
+        alpha.g = src.g;
+        alpha.b = src.b;
+        if (alpha.r > alpha.g)
+        {
+            if (alpha.r > alpha.b)
+            {
+                src.a = alpha.r;
+            }
+            else
+            {
+                src.a = alpha.b;
+            }
+        }
+        else if (alpha.g > alpha.b)
+        {
+            src.a = alpha.g;
+        }
+        else
+        {
+            src.a = alpha.b;
+        }
 
-        // Create a new color with the same RGB components as input, and alpha based on the luminance
-        Color outputColor = new Color(inputColor.r, inputColor.g, inputColor.b, alpha);
 
-        return outputColor;
+        src.r = (src.r - color.r) / src.a + color.r;
+        src.g = (src.g - color.g) / src.a + color.g;
+        src.b = (src.b - color.b) / src.a + color.b;
+
+        src.a *= alpha.a;
+
+        return src;
     }
 
     // Update is called once per frame
