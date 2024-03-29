@@ -57,6 +57,14 @@ public class PartFile
 
 
         Instance = JsonUtility.FromJson<PartFile>(System.IO.File.ReadAllText(FileName));
+
+        //Check for empty keyframes, newer updates
+        if(Instance.KeyFrames.GlowKeys.Count == 0)
+        {
+            Debug.Log("Nothing in there.");
+            Instance.KeyFrames.AddKeyframeGlow(1, new GlowData(), true);
+        }
+
         FileDirectory = DirectoryHelper.GetDirectoryOfFile(FileName);
         PlayerPrefs.SetString("LastFile", FileName);  //For editor purposes
     }

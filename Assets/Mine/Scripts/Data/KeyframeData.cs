@@ -12,7 +12,7 @@ public class KeyframeData<T>
     [SerializeField]
     public T State;
 
-    public static void AddOrUpdate(int frame, T data, List<KeyframeData<T>> ListRef)
+    public static void AddOrUpdate(int frame, T data, List<KeyframeData<T>> ListRef, bool First = false)
     {
         /*
         List<KeyframeData<T>>.Enumerator e1 = ListRef.GetEnumerator();

@@ -32,7 +32,9 @@ public class KeyframeList
     [SerializeField]
     public List<KeyframeData<Color>> DirectionalLightColorKeys = new List<KeyframeData<Color>>();
 
-    
+    [SerializeField]
+    public List<KeyframeData<GlowData>> GlowKeys = new List<KeyframeData<GlowData>>();
+
 
     /// <summary>
     /// Called every time we add, delete, or move a keyframe
@@ -55,6 +57,8 @@ public class KeyframeList
         ShapeKeyframes.Sort(comparer5);
 
         var comparer6 = new FrameNumComparer<float>();
+
+
         FresnelKeyframes.Sort(comparer6);
 
         Fresnel2Keyframes.Sort(comparer6);
@@ -65,7 +69,8 @@ public class KeyframeList
         DirectionalLightIntensityKeys.Sort(comparer6);  //Float comparer
         SceneLightColorKeys.Sort(comparer4);  //Color comparor
         DirectionalLightColorKeys.Sort(comparer4);  // Color comparor
-
+        var comparer7 = new FrameNumComparer<GlowData>();
+        GlowKeys.Sort(comparer7);
 
         KeyframeMainWindow window = KeyframeMainWindow.GetInstance();
         if(window != null)
@@ -161,6 +166,12 @@ public class KeyframeList
         SortAll();
     }
 
+    public void AddKeyframeGlow(int frameNum, GlowData value, bool First = false)
+    {
+        KeyframeData<GlowData>.AddOrUpdate(frameNum, value, GlowKeys);
+        if(!First)
+            SortAll();
+    }
 
     /// <summary>
     /// Called whenever fresnel is updated.  Should be called AFTER the mouse exits

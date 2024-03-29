@@ -1305,10 +1305,10 @@
     "m_Guid": {
         "m_GuidSerialized": "865ff7e2-8a39-4135-a893-a86d1bf72ba7"
     },
-    "m_Name": "InneRimColor",
+    "m_Name": "InnerRimColor",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "InneRimColor",
-    "m_DefaultReferenceName": "_InneRimColor",
+    "m_RefNameGeneratedByDisplayName": "InnerRimColor",
+    "m_DefaultReferenceName": "_InnerRimColor",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -5957,7 +5957,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
     "m_ObjectId": "fbe0c6c984624bed8c5ee7725e90baf3",
     "m_Id": 0,
-    "m_DisplayName": "InneRimColor",
+    "m_DisplayName": "InnerRimColor",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",

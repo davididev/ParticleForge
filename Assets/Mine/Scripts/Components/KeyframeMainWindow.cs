@@ -23,15 +23,11 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     float saveFileTimer = 0.0f;
     private bool isPlayingPreview = false;
     private float playingPreviewTimer = 0f;
-    public enum OBJECT_MODE { Vertex, Rotation, Position, NoiseOffset, SetColor, Fresnel, Fresnel2, Lighting1, Lighting2, Lighting3, Lighting4, Render};
+    public enum OBJECT_MODE { Vertex, Rotation, Position, NoiseOffset, SetColor, Fresnel, Fresnel2, Lighting1, Lighting2, Lighting3, Lighting4, Glow, Render};
     public OBJECT_MODE CurrentMode = OBJECT_MODE.Rotation;
     // Start is called before the first frame update
     void Start()
     {
-        if(Application.isEditor)
-        {
-            PartFile.GetInstance().LoadFile(PlayerPrefs.GetString("LastFile"));
-        }
         Invoke("LoadNoise", 0.1f);
 
 
@@ -77,6 +73,10 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
 
     void LoadNoise()
     {
+        if (Application.isEditor)  //Moved over here so the timeline has a chance to generate
+        {
+            PartFile.GetInstance().LoadFile(PlayerPrefs.GetString("LastFile"));
+        }
         Texture2D Noise = PartFile.GetInstance().LoadNoise();
         refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
         RefreshObjectState();  //File loaded, let's go
@@ -248,6 +248,24 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             KeyframeData<Vector2>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out offset1, out offset2, out lerp, tempData8);
             Vector2 currentOffset = Vector2.Lerp(offset1, offset2, lerp);
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTextureOffset("_Noise", currentOffset);
+
+            //Set glow settings
+            List<KeyframeData<GlowData>> tempData11 = PartFile.GetInstance().KeyFrames.GlowKeys;
+            GlowData g1;
+            GlowData g2;
+            KeyframeData<GlowData>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out g1, out g2, out lerp, tempData11);
+            //RenderSettings.ambientLight = Mathf.Lerp(fres1, fres2, lerp);
+            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetColor("_InnerRimColor", Color.Lerp(g1.innerColor, g2.innerColor, lerp));
+            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetColor("_InnerRimColor", Color.Lerp(g1.innerColor, g2.innerColor, lerp));
+            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_InnerRimThreshold", Mathf.Lerp(g1.innerThreshold, g2.innerThreshold, lerp));
+            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_OuterRimThreshold", Mathf.Lerp(g1.outerThreshold, g2.outerThreshold, lerp));
+            //SetGlowValuePanel.CurrentGlowData = (GlowData.Lerp(g1, g2, lerp))
+
+
+
+            //Not in vertex mode- close the wireframe
+            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_WireframeThreshold", 0f);
+
         }
     }
 
@@ -279,6 +297,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             keyframes = KeyframeData<Color>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.DirectionalLightColorKeys); 
         if (CurrentMode == OBJECT_MODE.Lighting4)
             keyframes = KeyframeData<Color>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.SceneLightColorKeys);
+        if (CurrentMode == OBJECT_MODE.Glow)
+            keyframes = KeyframeData<GlowData>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.GlowKeys);
         int i = 0; //i is the number of keyframes in the current mode
         for(int x = 1; x < 65; x++)  //x is the number of total markers of all possible keyframes
         {
@@ -446,7 +466,16 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
                 { list.RemoveAt(i); break; }
             }
         }
-        
+        if (CurrentMode == OBJECT_MODE.Glow)
+        {
+            List<KeyframeData<GlowData>> list = PartFile.GetInstance().KeyFrames.GlowKeys;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].FrameNum == SelectedFrame)
+                { list.RemoveAt(i); break; }
+            }
+        }
+
 
         UpdateKeyframes();
         RefreshObjectState();
@@ -524,6 +553,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             DropdownLightingDetected4();
         if (id == 10)
             DropdownFresnel2Selected();
+        if (id == 11)
+            DropdownGlowSelected();
 
         for (int i = 0; i < EditingWindows.Length; i++)
         {
@@ -594,5 +625,11 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     {
         CurrentMode = OBJECT_MODE.Lighting4;
         FrameTypeText.text = "Keyframes: Ambient Light Color";
+    }
+
+    public void DropdownGlowSelected()
+    {
+        CurrentMode = OBJECT_MODE.Glow;
+        FrameTypeText.text = "Keyframes: Glowing";
     }
 }
