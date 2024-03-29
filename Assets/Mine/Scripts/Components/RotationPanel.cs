@@ -8,6 +8,7 @@ public class RotationPanel : MonoBehaviour
     public StartingShapeHolder refToShape;
     public GameObject transformRotate;
     public TMPro.TMP_InputField[] RotationEulerText;
+    public TMPro.TMP_InputField RotateSnapText;
     void OnEnable()
     {
         Invoke("ResetTransformRotate", Time.deltaTime * 2f);
@@ -38,6 +39,12 @@ public class RotationPanel : MonoBehaviour
         RotationEulerText[0].text = currentFrame.x.ToString();
         RotationEulerText[1].text = currentFrame.y.ToString();
         RotationEulerText[2].text = currentFrame.z.ToString();
+        RotateSnapText.text = TransformRotate.RotateSnap.ToString();
+    }
+
+    public void OnUpdateRotateSnap()
+    {
+        TransformRotate.RotateSnap = float.Parse(RotateSnapText.text);
     }
 
     //We're moving this to StartingShapeHolder

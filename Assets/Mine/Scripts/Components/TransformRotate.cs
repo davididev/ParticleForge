@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class TransformRotate : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    public static float RotateSnap = 15f;
     public enum OffsestDirection { X, Y, Z};
     public OffsestDirection thisObjectOffset;
     public Image rend;
@@ -65,12 +66,12 @@ public class TransformRotate : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         {
             if (offset.x > 20f)
             {
-                OffsetStep.y += 15f;
+                OffsetStep.y += RotateSnap;
                 startMousePosition = eventData.position;  //Reset the offset for the next rotate step
             }
             if (offset.x < -20f)
             {
-                OffsetStep.y -= 15f;
+                OffsetStep.y -= RotateSnap;
                 startMousePosition = eventData.position;  //Reset the offset for the next rotate step
             }
         }
@@ -78,12 +79,12 @@ public class TransformRotate : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         {
             if (offset.y > 20f)
             {
-                OffsetStep.x += 15f;
+                OffsetStep.x += RotateSnap;
                 startMousePosition = eventData.position;  //Reset the offset for the next rotate step
             }
             if (offset.y < -20f)
             {
-                OffsetStep.x -= 15f;
+                OffsetStep.x -= RotateSnap;
                 startMousePosition = eventData.position;  //Reset the offset for the next rotate step
             }
         }
@@ -96,14 +97,14 @@ public class TransformRotate : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             if (dif > 15f)
             {
                 if (offset.magnitude > 40f) //Lower the sensitiviy- only rotate if the offset is far from the center
-                    OffsetStep.z += 15;
-                startingDegree += 15;
+                    OffsetStep.z += RotateSnap;
+                startingDegree += RotateSnap;
             }
             if (dif < -15f)
             {
                 if (offset.magnitude > 40f) //Lower the sensitiviy- only rotate if the offset is far from the center
-                    OffsetStep.z -= 15;
-                startingDegree -= 15;
+                    OffsetStep.z -= RotateSnap;
+                startingDegree -= RotateSnap;
             }
         }
     }
