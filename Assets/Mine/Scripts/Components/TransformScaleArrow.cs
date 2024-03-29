@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using UnityEngine.UI;   
 
 public class TransformScaleArrow : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    public static float ScaleSnap = 0.1f;
     public enum OffsestDirection { UP, RIGHT };
     public OffsestDirection thisObjectOffset;
     public Image rend;
@@ -73,25 +74,25 @@ public class TransformScaleArrow : MonoBehaviour, IBeginDragHandler, IDragHandle
         
         if (rel.x < -20f)  //Scale down X
         {
-            NewScale.x -= 0.1f;
+            NewScale.x -= ScaleSnap;
             NewScale.x = Mathf.Clamp(NewScale.x, 0.1f, 6f);
             startMousePosition = eventData.position;
         }
         if (rel.x > 50f)  //Scale up X
         {
-            NewScale.x += 0.1f;
+            NewScale.x += ScaleSnap;
             NewScale.x = Mathf.Clamp(NewScale.x, 0.1f, 6f);
             startMousePosition = eventData.position;
         }
         if (rel.y < -20f)  //Scale down Y
         {
-            NewScale.y -= 0.1f;
+            NewScale.y -= ScaleSnap;
             NewScale.y = Mathf.Clamp(NewScale.y, 0.1f, 6f);
             startMousePosition = eventData.position;
         }
         if (rel.y > 50f)  //Scale up Y
         {
-            NewScale.y += 0.1f;
+            NewScale.y += ScaleSnap;
             NewScale.y = Mathf.Clamp(NewScale.y, 0.1f, 6f);
             startMousePosition = eventData.position;
         }

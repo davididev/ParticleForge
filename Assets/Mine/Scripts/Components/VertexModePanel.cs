@@ -9,8 +9,9 @@ public class VertexModePanel : MonoBehaviour
     public VertexSelector vertexSelector;
 
     public TMPro.TextMeshProUGUI toolHeader, toolDescritption;
+    public TMPro.TMP_InputField snapTextBox;
 
-    public GameObject MoveTransformTools, ScaleTransformTools, RotateTransformTools;
+    public GameObject MoveTransformTools, ScaleTransformTools, RotateTransformTools, snapHolder;
     // Start is called before the first frame update
     void OnEnable()
     {
@@ -39,6 +40,7 @@ public class VertexModePanel : MonoBehaviour
         
         if (m == 0)  //Select mode
         {
+            snapHolder.SetActive(false);
             toolHeader.text = "Vertex Select ";
             toolDescritption.text = "Left click and drag to select point.\nRight click to clear selection.\nYou need at 1+ point to use move, 2+ points to use scale/rotate";
             vertexSelector.gameObject.SetActive(true);
@@ -49,7 +51,9 @@ public class VertexModePanel : MonoBehaviour
             {
                 SetMode(0);
                 return;
+            
             }
+            snapHolder.SetActive(false);
             LastNewWorldPosition = Vector3.zero;  //Reset tool processing variable
             toolHeader.text = "Move Vertex";
             toolDescritption.text = "(after making selection) \nMove all selected points on the X / Y Axis";
@@ -63,6 +67,8 @@ public class VertexModePanel : MonoBehaviour
                 SetMode(0);
                 return;
             }
+            snapHolder.SetActive(true);
+            snapTextBox.text = TransformScaleArrow.ScaleSnap.ToString();
             //Starting vars
             startingScaleVertexes = refToShape.GetVertices();
             TransformScaleArrow.NewScale = Vector3.one;
@@ -79,6 +85,8 @@ public class VertexModePanel : MonoBehaviour
                 SetMode(0);
                 return;
             }
+            snapHolder.SetActive(true);
+            snapTextBox.text = TransformRotate.RotateSnap.ToString();
             rotateAngle = 0f;  //Tool temporary variable
             startingScaleVertexes = refToShape.GetVertices();
             localMidPoint = refToShape.CurrentShape.transform.InverseTransformPoint(VertexUI.Midpoint);
@@ -88,6 +96,14 @@ public class VertexModePanel : MonoBehaviour
             RotateTransformTools.SetActive(true);
             RotateTransformTools.transform.position = Camera.main.WorldToScreenPoint(VertexUI.Midpoint);
         }
+    }
+
+    public void OnUpdateSnapText()
+    {
+        if(MyMode == 2) // Scale
+            TransformScaleArrow.ScaleSnap = float.Parse(snapTextBox.text);
+        if (MyMode == 3) // Rotation
+            TransformRotate.RotateSnap = float.Parse(snapTextBox.text);
     }
 
     // Update is called once per frame
