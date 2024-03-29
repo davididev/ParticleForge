@@ -735,7 +735,7 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: High Poly Cricle
       m_Image: {fileID: 0}
-    - m_Text: Plane
+    - m_Text: <s>Plane</s>
       m_Image: {fileID: 0}
     - m_Text: Star
       m_Image: {fileID: 0}
