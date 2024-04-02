@@ -237,7 +237,11 @@ public class KeyframeList
 
         KeyframeData<Color> firstLightColor = new KeyframeData<Color>(1, new Color(1f, 1f, 1f, 1f));
         DirectionalLightColorKeys.Add(firstLightColor);
+
+        KeyframeData<GlowData> firstGlow = new KeyframeData<GlowData>(1, new GlowData());
+        GlowKeys.Add(firstGlow);
     }   
 
 
 }
+    
