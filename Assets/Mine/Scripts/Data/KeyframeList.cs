@@ -221,7 +221,6 @@ public class KeyframeList
         Fresnel2Keyframes.Add(firstFresnold2);
 
         ShapeData.MAX_VERTICES = vertices;
-
         //KeyframeData<ShapeData> firstShape = new KeyframeData<ShapeData>(1, new ShapeData());
         //ShapeKeyframes.Add(firstShape);
 

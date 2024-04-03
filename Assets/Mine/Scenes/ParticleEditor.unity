@@ -532,8 +532,8 @@ RectTransform:
   - {fileID: 1876415207}
   - {fileID: 926003362}
   - {fileID: 470432096}
-  - {fileID: 1252536184}
   - {fileID: 973038280}
+  - {fileID: 1252536184}
   m_Father: {fileID: 1469839802}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3469,7 +3469,19 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateColorTextBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -4697,9 +4709,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InnerFresnelPanel, Assembly-CSharp
-        m_MethodName: PreviewSlider
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateFresnelSliders
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9041,7 +9053,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateColorSliders
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &428945830
 GameObject:
   m_ObjectHideFlags: 0
@@ -9553,7 +9577,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateColorSliders
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &445111032
 GameObject:
   m_ObjectHideFlags: 0
@@ -10240,7 +10276,19 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateColorTextBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -19589,7 +19637,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateColorSliders
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &929061164
 GameObject:
   m_ObjectHideFlags: 0
@@ -20371,7 +20431,19 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateColorTextBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -25572,7 +25644,19 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateColorTextBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -29313,7 +29397,19 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateColorTextBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -31772,9 +31868,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InnerFresnelPanel, Assembly-CSharp
-        m_MethodName: PreviewSlider
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateFresnelSliders
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -34091,6 +34187,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 340cb5e2c2fda344d966dab853600842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ColorInner:
+    Red:
+      ColorBackground: {fileID: 1993959583}
+      SliderRef: {fileID: 1730738424}
+      ColorText: {fileID: 470432097}
+      Identity: 0
+    Green:
+      ColorBackground: {fileID: 1535481410}
+      SliderRef: {fileID: 926003363}
+      ColorText: {fileID: 1252536185}
+      Identity: 1
+    Blue:
+      ColorBackground: {fileID: 1672550802}
+      SliderRef: {fileID: 1876415208}
+      ColorText: {fileID: 973038281}
+      Identity: 2
+    ColorOutput: {fileID: 26191720}
+  ColorOuter:
+    Red:
+      ColorBackground: {fileID: 868312407}
+      SliderRef: {fileID: 418949305}
+      ColorText: {fileID: 179916102}
+      Identity: 0
+    Green:
+      ColorBackground: {fileID: 2090788811}
+      SliderRef: {fileID: 1967002669}
+      ColorText: {fileID: 2061043092}
+      Identity: 1
+    Blue:
+      ColorBackground: {fileID: 44270945}
+      SliderRef: {fileID: 443403544}
+      ColorText: {fileID: 1446630348}
+      Identity: 2
+    ColorOutput: {fileID: 1256884731}
+  refToShape: {fileID: 1912277174}
+  InnerFresnel: {fileID: 1554417461}
+  OuterFresnel: {fileID: 214388671}
+  InnerFresnelText: {fileID: 60416990}
+  OuterFresnelText: {fileID: 1083922847}
 --- !u!114 &1651031218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35706,7 +35841,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateColorSliders
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1735435029
 GameObject:
   m_ObjectHideFlags: 0
@@ -37989,7 +38136,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateColorSliders
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1880440880
 GameObject:
   m_ObjectHideFlags: 0
@@ -39790,7 +39949,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateColorSliders
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1973836766
 GameObject:
   m_ObjectHideFlags: 0
@@ -41035,8 +41206,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InnerFresnelPanel, Assembly-CSharp
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
         m_MethodName: AddKeyframe
         m_Mode: 1
         m_Arguments:
@@ -41650,7 +41821,19 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1651031217}
+        m_TargetAssemblyTypeName: SetGlowValuePanel, Assembly-CSharp
+        m_MethodName: OnUpdateColorTextBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []

@@ -28,6 +28,10 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     // Start is called before the first frame update
     void Start()
     {
+        if (Application.isEditor)  //Moved over here so the timeline has a chance to generate
+        {
+            PartFile.GetInstance().LoadFile(PlayerPrefs.GetString("LastFile"));
+        }
         Invoke("LoadNoise", 0.1f);
 
 
@@ -73,10 +77,7 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
 
     void LoadNoise()
     {
-        if (Application.isEditor)  //Moved over here so the timeline has a chance to generate
-        {
-            PartFile.GetInstance().LoadFile(PlayerPrefs.GetString("LastFile"));
-        }
+       
         Texture2D Noise = PartFile.GetInstance().LoadNoise();
         refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
         RefreshObjectState();  //File loaded, let's go
@@ -256,7 +257,7 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             KeyframeData<GlowData>.GetLerpAmount(KeyframeMainWindow.SelectedFrame, out g1, out g2, out lerp, tempData11);
             //RenderSettings.ambientLight = Mathf.Lerp(fres1, fres2, lerp);
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetColor("_InnerRimColor", Color.Lerp(g1.innerColor, g2.innerColor, lerp));
-            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetColor("_InnerRimColor", Color.Lerp(g1.innerColor, g2.innerColor, lerp));
+            refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetColor("_OuterRimColor", Color.Lerp(g1.outerColor, g2.outerColor, lerp));
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_InnerRimThreshold", Mathf.Lerp(g1.innerThreshold, g2.innerThreshold, lerp));
             refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetFloat("_OuterRimThreshold", Mathf.Lerp(g1.outerThreshold, g2.outerThreshold, lerp));
             //SetGlowValuePanel.CurrentGlowData = (GlowData.Lerp(g1, g2, lerp))

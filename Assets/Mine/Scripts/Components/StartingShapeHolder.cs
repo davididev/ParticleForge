@@ -13,7 +13,7 @@ public class StartingShapeHolder : MonoBehaviour
 
     public GameObject CurrentShape { private set; get; }
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         int id = PartFile.GetInstance().ShapeID;
         //Only show the selected shape
