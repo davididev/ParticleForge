@@ -69,33 +69,21 @@ public class SetGlowValuePanel : MonoBehaviour
 
         public void OnUpdateTextBoxes()
         {
-            float r = float.Parse(Red.ColorText.text.ToString()) / 255f;
-            if (r < 0f)
-                Red.ColorText.text = "0";
-            if (r > 1f)
-                Red.ColorText.text = "255";
+            int r = int.Parse(Red.ColorText.text);
+            r = Mathf.Clamp(r, 0, 255);
+            Red.ColorText.text = r.ToString();
+            Red.SliderRef.value = (float)r / 255f;
 
-            r = Mathf.Clamp(r, 0f, 1f);
-            Red.SliderRef.value = r;
-
-            float g = float.Parse(Green.ColorText.text.ToString()) / 255f;
-            if (g < 0f)
-                Green.ColorText.text = "0";
-            if (g > 1f)
-                Green.ColorText.text = "255";
-
-            g = Mathf.Clamp(g, 0f, 1f);
-            Green.SliderRef.value = g;
+            int g = int.Parse(Green.ColorText.text);
+            g = Mathf.Clamp(g, 0, 255);
+            Green.ColorText.text = g.ToString();
+            Green.SliderRef.value = (float) g / 255f;
 
 
-            float b = float.Parse(Blue.ColorText.text.ToString()) / 255f;
-            if (b < 0f)
-                Blue.ColorText.text = "0";
-            if (b > 1f)
-                Blue.ColorText.text = "255";
-
-            b = Mathf.Clamp(b, 0f, 1f);
-            Blue.SliderRef.value = b;
+            int b = int.Parse(Blue.ColorText.text);
+            b = Mathf.Clamp(b, 0, 255);
+            Blue.ColorText.text = b.ToString();
+            Blue.SliderRef.value = (float)b / 255f;
         }
     }
 
@@ -119,7 +107,6 @@ public class SetGlowValuePanel : MonoBehaviour
     /// </summary>
     void SetUIValues()
     {
-        RefreshUI();
         Color c1 = refToShape.CurrentShape.GetComponent<MeshRenderer>().material.GetColor("_InnerRimColor");
         ColorInner.SetColor(c1);
         Color c2 = refToShape.CurrentShape.GetComponent<MeshRenderer>().material.GetColor("_OuterRimColor");
