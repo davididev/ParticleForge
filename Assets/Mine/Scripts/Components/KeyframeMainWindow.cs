@@ -528,8 +528,10 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         
     }
 
-    public void UpdateDropdown()
+    public void UpdateDropdown(bool returningFromRender = false)
     {
+        if (returningFromRender == false && CurrentMode == OBJECT_MODE.Render)
+            return;
         
         int id = DropdownObjectMode.value;
         if (id == 0)
@@ -563,6 +565,27 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         }
         UpdateKeyframes();
         RefreshObjectState();
+    }
+
+    /// <summary>
+    /// Set to no editing window and render mode when you click the render button
+    /// </summary>
+    public void OnRenderClicked()
+    {
+        CurrentMode = OBJECT_MODE.Render;
+        for (int i = 0; i < EditingWindows.Length; i++)
+        {
+            EditingWindows[i].SetActive(false);
+        }
+        RefreshObjectState();
+    }
+
+    /// <summary>
+    /// Set when you 'x' out of render mode
+    /// </summary>
+    public void OnRenderDone()  
+    {
+        UpdateDropdown(true);
     }
 
     public void DropdownRotationSelected()
