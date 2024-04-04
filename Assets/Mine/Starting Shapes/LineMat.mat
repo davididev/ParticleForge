@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StarMat
+  m_Name: LineMat
   m_Shader: {fileID: -6465566751694194690, guid: 9313cf38d659fee4ea49de351f9ecaab,
     type: 3}
   m_Parent: {fileID: 0}
@@ -49,7 +49,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FresnelMask:
-        m_Texture: {fileID: 2800000, guid: 44198c83a4f6e28469ccf761fe7d0e1e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6b8de1cd3e6852a4cb4f06b255c5a0ea, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -77,7 +77,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Wireframe:
-        m_Texture: {fileID: 2800000, guid: 2462fd8f8113fbc4b91758749fc2bdcc, type: 3}
+        m_Texture: {fileID: 2800000, guid: eabe7f40044fdea42b2ddf0f7da305fe, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
