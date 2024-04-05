@@ -359,6 +359,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
 
     public void OnKeyframeDeletePressed()
     {
+        if (CurrentMode == OBJECT_MODE.Render)
+            return;
         int x = SelectedFrame - 1;
         if(CurrentMode == OBJECT_MODE.Vertex)
         {
@@ -484,11 +486,15 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
 
     public void OnPlayButtonPressed()
     {
+        if (CurrentMode == OBJECT_MODE.Render)
+            return;
         isPlayingPreview = !isPlayingPreview;
     }
 
     void UpdateFrameNumber()
     {
+        if (CurrentMode == OBJECT_MODE.Render)
+            return;
         bool changedPos = false;
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -572,6 +578,7 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public void OnRenderClicked()
     {
+        isPlayingPreview = false;  //Turn off play while we're rendering.
         CurrentMode = OBJECT_MODE.Render;
         for (int i = 0; i < EditingWindows.Length; i++)
         {
