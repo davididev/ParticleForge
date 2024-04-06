@@ -48,10 +48,14 @@ public class SetGlowValuePanel : MonoBehaviour
             Red.UpdateColors(c);
             Green.UpdateColors(c);
             Blue.UpdateColors(c);
+            Red.ColorText.text = Mathf.Round(c.r * 255f).ToString();
+            Green.ColorText.text = Mathf.Round(c.g * 255f).ToString();
+            Blue.ColorText.text = Mathf.Round(c.b * 255f).ToString();
 
             ColorOutput.color = c;
             LastKeyframeColor = c;
-            OnUpdateSlider();  //Refresh the text boxes
+            //OnUpdateSlider();  //Refresh the text boxes  
+
         }
 
         public Color GetLastColor()
@@ -64,7 +68,7 @@ public class SetGlowValuePanel : MonoBehaviour
             Red.ColorText.text = Mathf.Round(Red.SliderRef.value * 255f).ToString();
             Green.ColorText.text = Mathf.Round(Green.SliderRef.value * 255f).ToString();
             Blue.ColorText.text = Mathf.Round(Blue.SliderRef.value * 255f).ToString();
-            
+            SetColor(new Color(Red.SliderRef.value, Green.SliderRef.value, Blue.SliderRef.value, 1f));
         }
 
         public void OnUpdateTextBoxes()
@@ -84,6 +88,7 @@ public class SetGlowValuePanel : MonoBehaviour
             b = Mathf.Clamp(b, 0, 255);
             Blue.ColorText.text = b.ToString();
             Blue.SliderRef.value = (float)b / 255f;
+            SetColor(new Color(Red.SliderRef.value, Green.SliderRef.value, Blue.SliderRef.value, 1f));
         }
     }
 
@@ -113,6 +118,8 @@ public class SetGlowValuePanel : MonoBehaviour
         ColorOuter.SetColor(c2);
         InnerFresnel.value = refToShape.CurrentShape.GetComponent<MeshRenderer>().material.GetFloat("_InnerRimThreshold");
         OuterFresnel.value = refToShape.CurrentShape.GetComponent<MeshRenderer>().material.GetFloat("_OuterRimThreshold");
+        InnerFresnelText.text = InnerFresnel.value.ToString("0.00");
+        OuterFresnelText.text = OuterFresnel.value.ToString("0.00");
         OnUpdateFresnelSliders();
         RedrawVars();
         Init = true;
