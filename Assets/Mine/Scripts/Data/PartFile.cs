@@ -72,8 +72,13 @@ public class PartFile
 
     public Texture2D LoadNoise(int frameNum)
     {
-        if (KeyFrames.NoiseFileKeyframes.Count == 0)  //Refactor for older files that don't have keyframes for noise
+        if (NoiseDirectory != "")  //Refactor for older files that don't have keyframes for noise
+        {
+            KeyFrames.NoiseFileKeyframes.Clear();
             KeyFrames.NoiseFileKeyframes.Add(new KeyframeData<string>(1, NoiseDirectory));
+            NoiseDirectory = "";
+        }
+            
 
         //Will write code later
         Texture2D newTex = new Texture2D((int)FrameSize, (int)FrameSize);
@@ -82,6 +87,15 @@ public class PartFile
         //Debug.Log("File directory: " + dir + "; " + NoiseDirectory);
 
         string keyframeNoiseDirectory = "";
+        List<KeyframeData<string>>.Enumerator e2 = KeyFrames.NoiseFileKeyframes.GetEnumerator();
+        while(e2.MoveNext())
+        {
+            Debug.Log("Frame #" + e2.Current.FrameNum + ": " + e2.Current.State);
+            if (frameNum <= e2.Current.FrameNum)
+                keyframeNoiseDirectory = e2.Current.State;
+            else
+                break;
+        }
 
         if (keyframeNoiseDirectory != "")
         {

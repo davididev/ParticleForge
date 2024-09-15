@@ -78,8 +78,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     void LoadNoise()
     {
        
-        Texture2D Noise = PartFile.GetInstance().LoadNoise(KeyframeMainWindow.SelectedFrame);
-        refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
+        //Texture2D Noise = PartFile.GetInstance().LoadNoise(KeyframeMainWindow.SelectedFrame);
+        //refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
         RefreshObjectState();  //File loaded, let's go
     }
 
@@ -126,6 +126,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public void RefreshObjectState()
     {
+        Texture2D Noise = PartFile.GetInstance().LoadNoise(KeyframeMainWindow.SelectedFrame);
+        refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
         //Add functionality here 
         for (int i = 0; i < EditingWindows.Length; i++)
         {
