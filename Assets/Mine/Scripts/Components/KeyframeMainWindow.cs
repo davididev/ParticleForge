@@ -126,8 +126,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public void RefreshObjectState()
     {
-        Texture2D Noise = PartFile.GetInstance().LoadNoise(KeyframeMainWindow.SelectedFrame);
-        refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
+        
+        
         //Add functionality here 
         for (int i = 0; i < EditingWindows.Length; i++)
         {
@@ -137,6 +137,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
 
         if (refToShape.CurrentShape == null)
             return;
+        Texture2D Noise = PartFile.GetInstance().LoadNoise(KeyframeMainWindow.SelectedFrame);
+        refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
         float lerp = 0f;  //This will be used by all functions
 
         //In both modes, vertex and object, show the mesh vertex positions
