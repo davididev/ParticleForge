@@ -117,7 +117,7 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         
         string dir2 = output[0];
         PartFile.GetInstance().NoiseDirectory = DirectoryHelper.GetRelativePath(dir1, dir2);
-        Texture2D Noise = PartFile.GetInstance().LoadNoise();
+        Texture2D Noise = PartFile.GetInstance().LoadNoise(KeyframeMainWindow.SelectedFrame);
         refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
     }
 
