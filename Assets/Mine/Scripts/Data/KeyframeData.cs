@@ -66,7 +66,7 @@ public class KeyframeData<T>
     /// </summary>
     /// <param name="frame">Frame number to calculate from</param>
     /// <param name="data1">(out) Keyframe to the left in the timeline (both are identical if we're at a keyframe or if there are none to the right)</param>
-    /// <param name="data2">(out) Keyframe to the left in the timeline (both are identical if we're at a keyframe or if there are none to the right)</param>
+    /// <param name="data2">(out) Keyframe to the right in the timeline (both are identical if we're at a keyframe or if there are none to the right)</param>
     /// <param name="lerp">(out) percentage between data1 and data2</param>
     /// <param name="ListRef">The linked list we're working with</param>
     public static void GetLerpAmount(int frame, out T data1, out T data2, out float lerp, List<KeyframeData<T>> ListRef)

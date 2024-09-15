@@ -7,7 +7,7 @@ using System.IO;
 public class PartFile
 {
     public string FileDirectory { get; private set; }
-    public string NoiseDirectory = "";
+    public string NoiseDirectory = "";  //We're refactoring this to be a keyframe
     public int FrameSize = 32;
     public int FrameCount = 16;
     public int ShapeID = 0;
@@ -70,17 +70,22 @@ public class PartFile
     }
 
 
-    public Texture2D LoadNoise()
+    public Texture2D LoadNoise(int frameNum)
     {
+        if (KeyFrames.NoiseFileKeyframes.Count == 0)  //Refactor for older files that don't have keyframes for noise
+            KeyFrames.NoiseFileKeyframes.Add(new KeyframeData<string>(1, NoiseDirectory));
+
         //Will write code later
         Texture2D newTex = new Texture2D((int)FrameSize, (int)FrameSize);
         string dir = PlayerPrefs.GetString("LastFile");
         dir = DirectoryHelper.GetDirectoryOfFile(dir);
-        Debug.Log("File directory: " + dir + "; " + NoiseDirectory);
+        //Debug.Log("File directory: " + dir + "; " + NoiseDirectory);
 
-        if (NoiseDirectory != "")
+        string keyframeNoiseDirectory = "";
+
+        if (keyframeNoiseDirectory != "")
         {
-            string newDir = DirectoryHelper.CombineDirectories(dir, NoiseDirectory);
+            string newDir = DirectoryHelper.CombineDirectories(dir, keyframeNoiseDirectory);
             Debug.Log("New Dir: " + newDir);
             if (File.Exists(newDir))
             {

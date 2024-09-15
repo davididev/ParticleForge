@@ -11,10 +11,15 @@ public class KeyframeList
     public List<KeyframeData<Vector2>> PositionKeyframes = new List<KeyframeData<Vector2>>();
     [SerializeField]
     public List<KeyframeData<Vector2>> NoiseTextureKeyframes = new List<KeyframeData<Vector2>>();
+
+
     [SerializeField]
     public List<KeyframeData<Color>> ColorKeyframes = new List<KeyframeData<Color>>();
     [SerializeField]
     public List<KeyframeData<ShapeData>> ShapeKeyframes = new List<KeyframeData<ShapeData>>();
+
+    [SerializeField]
+    public List<KeyframeData<string>> NoiseFileKeyframes = new List<KeyframeData<string>>();
 
     [SerializeField]
     public List<KeyframeData<float>> FresnelKeyframes = new List<KeyframeData<float>>();
@@ -50,6 +55,8 @@ public class KeyframeList
         var comparer3 = new FrameNumComparer<Vector2>();
         NoiseTextureKeyframes.Sort(comparer3);
 
+        
+
         var comparer4 = new FrameNumComparer<Color>();
         ColorKeyframes.Sort(comparer4);
 
@@ -65,12 +72,16 @@ public class KeyframeList
 
 
 
+
         DirectionalLightRotationKeyframes.Sort(comparer1);  //Vector3 comparer
         DirectionalLightIntensityKeys.Sort(comparer6);  //Float comparer
         SceneLightColorKeys.Sort(comparer4);  //Color comparor
         DirectionalLightColorKeys.Sort(comparer4);  // Color comparor
         var comparer7 = new FrameNumComparer<GlowData>();
         GlowKeys.Sort(comparer7);
+
+        var comparer8 = new FrameNumComparer<string>();
+        NoiseFileKeyframes.Sort(comparer8);
 
         KeyframeMainWindow window = KeyframeMainWindow.GetInstance();
         if(window != null)
@@ -117,6 +128,17 @@ public class KeyframeList
     public void AddKeyframeNoiseOffset(int frameNum, Vector2 pos)
     {
         KeyframeData<Vector2>.AddOrUpdate(frameNum, pos, NoiseTextureKeyframes);
+        SortAll();
+    }
+
+    /// <summary>
+    /// Called whenever noise keyframe added
+    /// </summary>
+    /// <param name="frameNum"></param>
+    /// <param name="fileDir"></param>
+    public void AddNoiseTextureFile(int frameNum, string fileDir)
+    {
+        KeyframeData<string>.AddOrUpdate(frameNum, fileDir, NoiseFileKeyframes);
         SortAll();
     }
 
@@ -204,6 +226,9 @@ public class KeyframeList
     {
         KeyframeData<Vector3> firstRot = new KeyframeData<Vector3>(1, new Vector3(-90f, 90f, -90f));
         RotationKeyframes.Add(firstRot);
+
+        KeyframeData<string> noiseDirectory = new KeyframeData<string>(1, "");
+        NoiseFileKeyframes.Add(noiseDirectory);
 
         KeyframeData<Vector2> firstPos = new KeyframeData<Vector2>(1, Vector2.zero);
         PositionKeyframes.Add(firstPos);
