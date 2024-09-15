@@ -51,20 +51,22 @@ public class VertexUI : MonoBehaviour
 
         ClearHovered();
     }
-
     public static void CalculateMidpoint()
     {
         Midpoint = Vector3.zero;
-        int Count = Selected.Count;
+        //int Count = Selected.Count;
+        float Count = 0f;  //We're gonna calculate this with the enumerator
         //Debug.Log("Calculating midpoint: " + Count);
         List<VertexUI>.Enumerator e2 = Selected.GetEnumerator();
         while (e2.MoveNext())
         {
             Midpoint += e2.Current.transform.position;
+            Count += 1f; //We're gonna calculate this with the enumerator
             //Debug.Log("Point #" + e2.Current.VertexID + " Pos: " + e2.Current.transform.position + " total: " + Midpoint);
         }
+        Debug.Log(Time.time + ": Count of points- " + Count);
         Midpoint.z = 0f;
-        Midpoint = Midpoint / Count;
+        Midpoint /= Count;
     }
 
     /// <summary>
@@ -107,7 +109,8 @@ public class VertexUI : MonoBehaviour
     public void SetHoveredToSelected()
     {
         selectID = 2;
-        Selected.Add(this);
+        if(Selected.Contains(this) == false)  //Debug.Log implies duplicates, check for duplicates
+            Selected.Add(this);
     }
 
     // Update is called once per frame

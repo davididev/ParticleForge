@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class VertexModePanel : MonoBehaviour
 {
@@ -53,12 +54,14 @@ public class VertexModePanel : MonoBehaviour
                 return;
             
             }
+            VertexUI.CalculateMidpoint();
             snapHolder.SetActive(false);
             LastNewWorldPosition = Vector3.zero;  //Reset tool processing variable
             toolHeader.text = "Move Vertex";
             toolDescritption.text = "(after making selection) \nMove all selected points on the X / Y Axis";
             MoveTransformTools.SetActive(true);
             MoveTransformTools.transform.position = Camera.main.WorldToScreenPoint(VertexUI.Midpoint);
+            //MoveTransformTools.transform.position = VertexUI.Midpoint;
         }
         if (m == 2)  //Scale mode
         {
