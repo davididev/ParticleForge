@@ -64,8 +64,8 @@ public class VertexUI : MonoBehaviour
             Count += 1f; //We're gonna calculate this with the enumerator
             //Debug.Log("Point #" + e2.Current.VertexID + " Pos: " + e2.Current.transform.position + " total: " + Midpoint);
         }
-        Debug.Log(Time.time + ": Count of points- " + Count);
-        Midpoint.z = 0f;
+        //Debug.Log(Time.time + ": Count of points- " + Count);
+        //Midpoint.z = 0f;
         Midpoint /= Count;
     }
 
