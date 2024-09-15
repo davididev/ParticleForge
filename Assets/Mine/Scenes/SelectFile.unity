@@ -737,13 +737,15 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: <s>Plane</s>
       m_Image: {fileID: 0}
-    - m_Text: Star
+    - m_Text: 4-Sided Star
       m_Image: {fileID: 0}
     - m_Text: Plane Fixed
       m_Image: {fileID: 0}
     - m_Text: Ring
       m_Image: {fileID: 0}
     - m_Text: Rounded Line
+      m_Image: {fileID: 0}
+    - m_Text: 5-Sided Star
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
