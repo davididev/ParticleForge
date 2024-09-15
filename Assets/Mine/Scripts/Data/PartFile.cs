@@ -91,7 +91,7 @@ public class PartFile
         while(e2.MoveNext())
         {
             Debug.Log("Frame #" + e2.Current.FrameNum + ": " + e2.Current.State);
-            if (frameNum <= e2.Current.FrameNum)
+            if (frameNum >= e2.Current.FrameNum)
                 keyframeNoiseDirectory = e2.Current.State;
             else
                 break;

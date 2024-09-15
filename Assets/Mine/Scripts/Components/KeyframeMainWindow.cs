@@ -23,7 +23,7 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     float saveFileTimer = 0.0f;
     private bool isPlayingPreview = false;
     private float playingPreviewTimer = 0f;
-    public enum OBJECT_MODE { Vertex, Rotation, Position, NoiseOffset, SetColor, Fresnel, Fresnel2, Lighting1, Lighting2, Lighting3, Lighting4, Glow, Render};
+    public enum OBJECT_MODE { Vertex, Rotation, Position, NoiseOffset, SetColor, Fresnel, Fresnel2, Lighting1, Lighting2, Lighting3, Lighting4, Glow, Render, NoiseDirectory};
     public OBJECT_MODE CurrentMode = OBJECT_MODE.Rotation;
     // Start is called before the first frame update
     void Start()
@@ -77,7 +77,7 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
 
     void LoadNoise()
     {
-       
+        //Moving these to update object state
         //Texture2D Noise = PartFile.GetInstance().LoadNoise(KeyframeMainWindow.SelectedFrame);
         //refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
         RefreshObjectState();  //File loaded, let's go
@@ -104,6 +104,9 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         return GameObject.FindWithTag("MainWindow").GetComponent<KeyframeMainWindow>();
     }
 
+    /// <summary>
+    /// This is going to be called by Keyframe editor too, loading noise
+    /// </summary>
     public void LoadNoiseTextureButton()
     {
         string dir = DirectoryHelper.GetDirectoryOfFile(PlayerPrefs.GetString("LastFile"));
@@ -116,7 +119,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         dir1 = DirectoryHelper.GetDirectoryOfFile(dir1);
         
         string dir2 = output[0];
-        PartFile.GetInstance().NoiseDirectory = DirectoryHelper.GetRelativePath(dir1, dir2);
+        //PartFile.GetInstance().NoiseDirectory = DirectoryHelper.GetRelativePath(dir1, dir2);
+        PartFile.GetInstance().KeyFrames.AddNoiseTextureFile(KeyframeMainWindow.SelectedFrame, DirectoryHelper.GetRelativePath(dir1, dir2));
         Texture2D Noise = PartFile.GetInstance().LoadNoise(KeyframeMainWindow.SelectedFrame);
         refToShape.CurrentShape.GetComponent<MeshRenderer>().material.SetTexture("_Noise", Noise);
     }
@@ -304,6 +308,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             keyframes = KeyframeData<Color>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.SceneLightColorKeys);
         if (CurrentMode == OBJECT_MODE.Glow)
             keyframes = KeyframeData<GlowData>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.GlowKeys);
+        if (CurrentMode == OBJECT_MODE.NoiseDirectory)
+            keyframes = KeyframeData<string>.GetKeyframeIDS(PartFile.GetInstance().KeyFrames.NoiseFileKeyframes);
         int i = 0; //i is the number of keyframes in the current mode
         for(int x = 1; x < 65; x++)  //x is the number of total markers of all possible keyframes
         {
@@ -482,7 +488,15 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
                 { list.RemoveAt(i); break; }
             }
         }
-
+        if (CurrentMode == OBJECT_MODE.NoiseDirectory)
+        {
+            List<KeyframeData<string>> list = PartFile.GetInstance().KeyFrames.NoiseFileKeyframes;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].FrameNum == SelectedFrame)
+                { list.RemoveAt(i); break; }
+            }
+        }
 
         UpdateKeyframes();
         RefreshObjectState();
@@ -568,6 +582,8 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
             DropdownFresnel2Selected();
         if (id == 11)
             DropdownGlowSelected();
+        if (id == 12)
+            DropdownNoiseTextureSelected();
 
         for (int i = 0; i < EditingWindows.Length; i++)
         {
@@ -575,6 +591,12 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         }
         UpdateKeyframes();
         RefreshObjectState();
+    }
+
+    void DropdownNoiseTextureSelected()
+    {
+        CurrentMode = OBJECT_MODE.NoiseDirectory;
+        FrameTypeText.text = "Keyframes: Noise Directory";
     }
 
     /// <summary>
