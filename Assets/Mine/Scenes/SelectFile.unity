@@ -747,6 +747,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: 5-Sided Star
       m_Image: {fileID: 0}
+    - m_Text: Explosion
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
