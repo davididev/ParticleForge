@@ -11,7 +11,7 @@ public class SetDiffuseColorPanel : MonoBehaviour
         public Image ColorBackground;
         public Slider SliderRef;
         public TMPro.TMP_InputField ColorText;
-        public enum COLOR { Red, Green, Blue};
+        public enum COLOR { Red, Green, Blue, Alpha};
         public COLOR Identity = COLOR.Red;
         public void UpdateColors(Color current)
         {
@@ -43,6 +43,8 @@ public class SetDiffuseColorPanel : MonoBehaviour
 
     [SerializeField]
     public IndivColor[] ColorSliders;
+    public Slider alphaSlider;
+    public TMPro.TMP_InputField alphaSliderLabel;
     public Image resultColor;
     private Color CurrentColor;
     public static Color KeyframeColor = Color.white;
@@ -81,6 +83,8 @@ public class SetDiffuseColorPanel : MonoBehaviour
         ColorSliders[0].SliderRef.value = CurrentColor.r;
         ColorSliders[1].SliderRef.value = CurrentColor.g;
         ColorSliders[2].SliderRef.value = CurrentColor.b;
+
+        alphaSlider.value = CurrentColor.a;
     }
 
     /// <summary>
@@ -91,6 +95,7 @@ public class SetDiffuseColorPanel : MonoBehaviour
         ColorSliders[0].ColorText.text = Mathf.Round(CurrentColor.r * 255f).ToString();
         ColorSliders[1].ColorText.text = Mathf.Round(CurrentColor.g * 255f).ToString();
         ColorSliders[2].ColorText.text = Mathf.Round(CurrentColor.b * 255f).ToString();
+        alphaSliderLabel.text = Mathf.Round(CurrentColor.a * 255f).ToString();
     }
 
     /// <summary>
@@ -117,6 +122,7 @@ public class SetDiffuseColorPanel : MonoBehaviour
         CurrentColor.r = ColorSliders[0].SliderRef.value;
         CurrentColor.g = ColorSliders[1].SliderRef.value;
         CurrentColor.b = ColorSliders[2].SliderRef.value;
+        CurrentColor.a = alphaSlider.value;
         SetTextBoxValues();
         UpdateColorSliderGradients();
         UpdateRefColor();
@@ -132,6 +138,7 @@ public class SetDiffuseColorPanel : MonoBehaviour
         CurrentColor.r = int.Parse(ColorSliders[0].ColorText.text) / 255f;
         CurrentColor.g = int.Parse(ColorSliders[1].ColorText.text) / 255f;
         CurrentColor.b = int.Parse(ColorSliders[2].ColorText.text) / 255f;
+        CurrentColor.a = int.Parse(alphaSliderLabel.text) / 255f;
         SetSliderValues();
         UpdateColorSliderGradients();
         UpdateRefColor();
