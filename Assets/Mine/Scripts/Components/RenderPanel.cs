@@ -16,6 +16,8 @@ public class RenderPanel : MonoBehaviour
 
     public TMPro.TMP_InputField cameraSizeText, frameSizeText;
     public Toggle ToggleButton;
+    public Toggle MultipleFileButtons, LeadingZerosButton;
+    public GameObject MultipleFileHolder;
     public TMPro.TextMeshProUGUI outputSizeLabel, renderingLabel;
 
     private int spritesheetSize = 0;  //Size of the whole spritesheet
@@ -31,6 +33,7 @@ public class RenderPanel : MonoBehaviour
         cameraSizeText.text = "1.50";
         OnUpdateFrameSizeText();
         OnUpdateCameraSizeText();
+        OnPressToggleMultipleFiles();
         toolsRoot.SetActive(false);
     }
 
@@ -40,12 +43,85 @@ public class RenderPanel : MonoBehaviour
         fileBrowser.SaveFile(dir, OnFileCreated, new string[] { ".png"});
     }
 
+    public void OnPressToggleMultipleFiles()
+    {
+        MultipleFileHolder.SetActive(MultipleFileButtons.isOn);
+    }
+
     void OnFileCreated(string[] output)
     {
-        string fileExtension = output[0].Substring(output[0].Length - 4, 4);
-        if (fileExtension != ".png")
-            output[0] += ".png";
-        StartCoroutine(RenderingRoutine(output[0]));
+        if(MultipleFileButtons.isOn)  //Adding this so we can split them up
+        {
+            //New added code
+            StartCoroutine(RenderingRoutineSeperate(output[0]));
+        }
+        else  //Original code for sprite sheet
+        {
+            string fileExtension = output[0].Substring(output[0].Length - 4, 4);
+            if (fileExtension != ".png")
+                output[0] += ".png";
+            StartCoroutine(RenderingRoutine(output[0]));
+        }
+        
+    }
+
+    IEnumerator RenderingRoutineSeperate(string path)
+    {
+        renderingRoot.SetActive(true);
+        settingsRoot.SetActive(false);
+        int maxFrame = PartFile.GetInstance().FrameCount;
+
+        Texture2D[] frames = new Texture2D[maxFrame];
+        int frameSize = PartFile.GetInstance().FrameSize;
+
+        //Create indiv frames as textures
+        for (int i = 1; i <= maxFrame; i++)
+        {
+            KeyframeMainWindow.SelectedFrame = i;
+            mainWindow.RefreshObjectState();
+            yield return new WaitForSeconds(0.05f);
+            renderingLabel.text = "Rendering frame " + i + " of " + maxFrame;
+            int z = i - 1;  //Array index
+
+            frames[z] = new Texture2D(frameSize, frameSize);
+
+            Texture2D CurFrame = outputCamera.ConvertedTex();
+            for (int x = 0; x < frameSize; x++)
+            {
+                for (int y = 0; y < frameSize; y++)
+                {
+                    Color c = CurFrame.GetPixel(x, y);
+                    frames[z].SetPixel(x, y, c);
+                }
+            }
+            if (ToggleButton.isOn)  //Convert black to alpha
+                frames[z] = outputCamera.TextureToAlpha(frames[z]);
+            frames[z].Apply();
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        //Combine the frames into a final image
+        renderingLabel.text = "Done";
+        
+
+        for(int i = 1; i <= maxFrame; i++)
+        {
+            int z = i - 1;  //Array index
+            string newPath = path;
+            if (LeadingZerosButton.isOn)
+                newPath += i.ToString("D2") + ".png";
+            else
+                newPath += i + ".png";
+            System.IO.File.WriteAllBytes(newPath, frames[z].EncodeToPNG());
+            renderingLabel.text = "Writing frame " + i + " of " + maxFrame;
+            yield return new WaitForSeconds(0.05f);
+        }
+        
+
+        renderingLabel.text = "Done!";
+        yield return new WaitForSeconds(0.5f);
+        renderingRoot.SetActive(false);
+        settingsRoot.SetActive(true);
     }
 
     IEnumerator RenderingRoutine(string path)
