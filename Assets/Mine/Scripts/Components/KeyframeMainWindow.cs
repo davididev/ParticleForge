@@ -16,6 +16,7 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
     public GameObject MarkerPrefab;
     private GameObject[] MarkerGameObjects;
     public GameObject[] EditingWindows;
+    public GameObject StartingOutlineWindow;
     public Button DeleteKeyframeButton;
     public TMPro.TMP_Dropdown DropdownObjectMode;
     public TMPro.TextMeshProUGUI FrameNumberText, FrameTypeText, SaveFileText;
@@ -52,6 +53,11 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         BackgroundOfTimeline.sizeDelta = delta;
         
         UpdateDropdown();
+    }
+
+    public void ToggleOutlineShapeWindow()
+    {
+        StartingOutlineWindow.SetActive(!StartingOutlineWindow.activeInHierarchy);
     }
 
     public void OnPointerClick(PointerEventData pointerEventData)
@@ -112,6 +118,7 @@ public class KeyframeMainWindow : MonoBehaviour, IPointerClickHandler
         string dir = DirectoryHelper.GetDirectoryOfFile(PlayerPrefs.GetString("LastFile"));
         fileBrowser.OpenFile(dir, NoiseLoaded, new string[] { ".png", ".jpg" });
     }
+
 
     void NoiseLoaded(string[] output)
     {
